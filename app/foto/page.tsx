@@ -1,0 +1,256 @@
+'use client';
+
+import { useState, useRef, useCallback } from 'react';
+import Link from 'next/link';
+import { Camera, Upload, ArrowLeft, Loader2, RefreshCw } from 'lucide-react';
+import Fuse from 'fuse.js';
+import { getAlleProducten } from '@/lib/data';
+import { suikerklontjes } from '@/lib/types';
+import type { Product } from '@/lib/types';
+import SuikerklontjesToren from '@/components/SuikerklontjesToren';
+
+const producten = getAlleProducten();
+const fuse = new Fuse(producten, { keys: ['naam'], threshold: 0.4, minMatchCharLength: 2 });
+
+function matchProduct(naam: string): Product | null {
+  const results = fuse.search(naam);
+  return results.length > 0 ? results[0].item : null;
+}
+
+type HerkendProduct = {
+  naam: string;
+  match: Product | null;
+};
+
+export default function FotoPage() {
+  const [preview, setPreview] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
+  const [results, setResults] = useState<HerkendProduct[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
+  const cameraRef = useRef<HTMLInputElement>(null);
+
+  const compressAndSend = useCallback(async (file: File) => {
+    setLoading(true);
+    setError(null);
+    setResults(null);
+
+    const url = URL.createObjectURL(file);
+    setPreview(url);
+
+    try {
+      // Compress image client-side
+      const img = new Image();
+      await new Promise<void>((resolve, reject) => {
+        img.onload = () => resolve();
+        img.onerror = reject;
+        img.src = url;
+      });
+
+      const MAX_SIZE = 1024;
+      const scale = Math.min(1, MAX_SIZE / Math.max(img.width, img.height));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.round(img.width * scale);
+      canvas.height = Math.round(img.height * scale);
+      canvas.getContext('2d')!.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+      const blob = await new Promise<Blob>((resolve) =>
+        canvas.toBlob((b) => resolve(b!), 'image/jpeg', 0.82)
+      );
+
+      const formData = new FormData();
+      formData.append('image', blob, 'foto.jpg');
+
+      const res = await fetch('/api/herken-foto', { method: 'POST', body: formData });
+      if (!res.ok) throw new Error('Herkenning mislukt');
+
+      const data: { producten: string[] } = await res.json();
+      const herkend: HerkendProduct[] = data.producten.map((naam) => ({
+        naam,
+        match: matchProduct(naam),
+      }));
+      setResults(herkend);
+    } catch {
+      setError('Er ging iets mis bij de herkenning. Probeer opnieuw.');
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) compressAndSend(file);
+  };
+
+  const reset = () => {
+    setPreview(null);
+    setResults(null);
+    setError(null);
+    if (fileRef.current) fileRef.current.value = '';
+    if (cameraRef.current) cameraRef.current.value = '';
+  };
+
+  return (
+    <div className="max-w-2xl mx-auto px-4 py-8">
+      <Link
+        href="/"
+        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Terug
+      </Link>
+
+      <div className="text-center mb-8">
+        <div className="text-5xl mb-3">📸</div>
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">Foto herkenning</h1>
+        <p className="text-gray-500 text-sm">
+          Maak een foto van één of meerdere producten en AI herkent ze voor je.
+        </p>
+      </div>
+
+      {/* Upload area */}
+      {!preview && (
+        <div className="grid grid-cols-2 gap-4 mb-6">
+          <button
+            onClick={() => cameraRef.current?.click()}
+            className="flex flex-col items-center gap-3 bg-white border-2 border-dashed border-[#e8e0d8] rounded-2xl p-8 hover:border-[#e07a5f] hover:bg-[#fdf5f0] transition-colors"
+          >
+            <Camera className="w-8 h-8 text-[#e07a5f]" />
+            <span className="font-medium text-gray-700 text-sm">Camera</span>
+            <input
+              ref={cameraRef}
+              type="file"
+              accept="image/*"
+              capture="environment"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </button>
+
+          <button
+            onClick={() => fileRef.current?.click()}
+            className="flex flex-col items-center gap-3 bg-white border-2 border-dashed border-[#e8e0d8] rounded-2xl p-8 hover:border-[#e07a5f] hover:bg-[#fdf5f0] transition-colors"
+          >
+            <Upload className="w-8 h-8 text-[#e07a5f]" />
+            <span className="font-medium text-gray-700 text-sm">Uploaden</span>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+          </button>
+        </div>
+      )}
+
+      {/* Preview */}
+      {preview && (
+        <div className="relative mb-6">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={preview}
+            alt="Geüploade foto"
+            className="w-full rounded-2xl object-contain max-h-72 bg-gray-50 border border-[#e8e0d8]"
+          />
+          {!loading && (
+            <button
+              onClick={reset}
+              className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full px-3 py-1.5 text-sm font-medium flex items-center gap-1.5 shadow hover:bg-white transition"
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              Nieuwe foto
+            </button>
+          )}
+        </div>
+      )}
+
+      {/* Loading */}
+      {loading && (
+        <div className="flex flex-col items-center gap-3 py-10 text-gray-500">
+          <Loader2 className="w-8 h-8 animate-spin text-[#e07a5f]" />
+          <p className="text-sm">AI herkent producten…</p>
+        </div>
+      )}
+
+      {/* Error */}
+      {error && (
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-2xl px-5 py-4 text-sm mb-6">
+          {error}
+        </div>
+      )}
+
+      {/* Results */}
+      {results && !loading && (
+        <div>
+          <h2 className="font-semibold text-gray-900 mb-4">
+            {results.length === 0
+              ? 'Geen producten herkend'
+              : `${results.length} product${results.length === 1 ? '' : 'en'} herkend`}
+          </h2>
+
+          {results.length === 0 && (
+            <p className="text-gray-400 text-sm mb-6">
+              Probeer een duidelijkere foto met goed zichtbare verpakkingen of voedingsmiddelen.
+            </p>
+          )}
+
+          <div className="flex flex-col gap-4">
+            {results.map((item, idx) => {
+              if (item.match) {
+                const klontjes = suikerklontjes(item.match);
+                const labelKleur =
+                  klontjes <= 2
+                    ? 'text-emerald-700 bg-emerald-50 border-emerald-200'
+                    : klontjes <= 6
+                    ? 'text-yellow-700 bg-yellow-50 border-yellow-200'
+                    : 'text-red-700 bg-red-50 border-red-200';
+
+                return (
+                  <Link
+                    key={idx}
+                    href={`/product/${item.match.id}`}
+                    className="bg-white border border-[#e8e0d8] rounded-2xl p-5 flex items-center gap-4 hover:border-[#e07a5f] hover:bg-[#fdf5f0] transition-colors"
+                  >
+                    <span className="text-4xl">{item.match.emoji}</span>
+                    <div className="flex-1 min-w-0">
+                      <div className="font-semibold text-gray-900">{item.match.naam}</div>
+                      <div className="text-xs text-gray-400 mt-0.5">Herkend als: {item.naam}</div>
+                      <div className={`inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${labelKleur}`}>
+                        {klontjes} suikerklontje{klontjes === 1 ? '' : 's'}
+                      </div>
+                    </div>
+                    <div className="flex-shrink-0">
+                      <SuikerklontjesToren klontjes={Math.min(klontjes, 12)} small />
+                    </div>
+                  </Link>
+                );
+              }
+
+              return (
+                <div
+                  key={idx}
+                  className="bg-white border border-[#e8e0d8] rounded-2xl p-5 flex items-center gap-4 opacity-60"
+                >
+                  <span className="text-4xl">🔍</span>
+                  <div className="flex-1">
+                    <div className="font-semibold text-gray-900">{item.naam}</div>
+                    <div className="text-xs text-gray-400 mt-0.5">Niet gevonden in database</div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+
+          <button
+            onClick={reset}
+            className="mt-6 w-full flex items-center justify-center gap-2 bg-[#e07a5f] text-white font-semibold py-3 rounded-xl hover:bg-[#c9694f] transition-colors"
+          >
+            <Camera className="w-5 h-5" />
+            Nieuwe foto maken
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}

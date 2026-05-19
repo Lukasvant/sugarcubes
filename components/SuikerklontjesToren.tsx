@@ -50,7 +50,7 @@ function SugarCube({ index }: { index: number }) {
   );
 }
 
-export default function SuikerklontjesToren({ klontjes }: { klontjes: number }) {
+export default function SuikerklontjesToren({ klontjes, small }: { klontjes: number; small?: boolean }) {
   const count = Math.max(0, klontjes);
 
   if (count === 0) {
@@ -62,18 +62,22 @@ export default function SuikerklontjesToren({ klontjes }: { klontjes: number }) 
     );
   }
 
-  const cubes = Array.from({ length: count });
+  const displayCount = small ? Math.min(count, 10) : count;
+  const cols = small ? 5 : COLS;
+  const cubes = Array.from({ length: displayCount });
   const rows: typeof cubes[] = [];
-  for (let i = 0; i < cubes.length; i += COLS) {
-    rows.push(cubes.slice(i, i + COLS));
+  for (let i = 0; i < cubes.length; i += cols) {
+    rows.push(cubes.slice(i, i + cols));
   }
 
+  const scale = small ? 0.55 : 1;
+
   return (
-    <div className="flex flex-col items-center gap-1">
+    <div className="flex flex-col items-center gap-1" style={{ transform: `scale(${scale})`, transformOrigin: 'center top' }}>
       {rows.map((row, rowIdx) => (
         <div key={rowIdx} className="flex flex-row gap-1">
           {row.map((_, colIdx) => (
-            <SugarCube key={colIdx} index={rowIdx * COLS + colIdx} />
+            <SugarCube key={colIdx} index={rowIdx * cols + colIdx} />
           ))}
         </div>
       ))}

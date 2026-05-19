@@ -40,6 +40,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               <Link href="/regels" className="hover:text-[#e07a5f] transition-colors">Regels</Link>
               <Link href="/uitleg" className="hover:text-[#e07a5f] transition-colors">Uitleg</Link>
               <Link href="/vergelijk" className="hover:text-[#e07a5f] transition-colors">Vergelijk</Link>
+              <Link href="/foto" className="flex items-center gap-1.5 hover:text-[#e07a5f] transition-colors">
+                📸 Foto
+              </Link>
               <Link href="/scan" className="flex items-center gap-1.5 bg-[#e07a5f] text-white px-3 py-1.5 rounded-xl hover:bg-[#c9694f] transition-colors">
                 📷 Scan
               </Link>
