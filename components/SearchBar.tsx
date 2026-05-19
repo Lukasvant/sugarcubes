@@ -3,9 +3,10 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Fuse from 'fuse.js';
 import Link from 'next/link';
-import { Search } from 'lucide-react';
+import { Search, Loader2 } from 'lucide-react';
 import type { Product } from '@/lib/types';
 import { suikerklontjes } from '@/lib/types';
+import type { OFFSearchResult } from '@/lib/openfoodfacts';
 
 interface SearchBarProps {
   producten: Product[];
@@ -15,72 +16,82 @@ interface SearchBarProps {
 
 export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een product, bijv. "banaan" of "pasta"…' }: SearchBarProps) {
   const [query, setQuery] = useState('');
-  const [results, setResults] = useState<Product[]>([]);
+  const [localResults, setLocalResults] = useState<Product[]>([]);
+  const [offResults, setOffResults] = useState<OFFSearchResult[]>([]);
+  const [offLoading, setOffLoading] = useState(false);
   const [open, setOpen] = useState(false);
   const [activeIdx, setActiveIdx] = useState(-1);
+  const offDebounce = useRef<ReturnType<typeof setTimeout> | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
-  const listRef = useRef<HTMLUListElement>(null);
 
   const fuse = useRef(
-    new Fuse(producten, {
-      keys: ['naam', 'categorie'],
-      threshold: 0.35,
-      minMatchCharLength: 1,
-    })
+    new Fuse(producten, { keys: ['naam', 'categorie'], threshold: 0.35, minMatchCharLength: 1 })
   );
 
   useEffect(() => {
-    fuse.current = new Fuse(producten, {
-      keys: ['naam', 'categorie'],
-      threshold: 0.35,
-      minMatchCharLength: 1,
-    });
+    fuse.current = new Fuse(producten, { keys: ['naam', 'categorie'], threshold: 0.35, minMatchCharLength: 1 });
   }, [producten]);
 
-  const handleChange = useCallback(
-    (e: React.ChangeEvent<HTMLInputElement>) => {
-      const val = e.target.value;
-      setQuery(val);
-      setActiveIdx(-1);
-      if (val.trim().length === 0) {
-        setResults([]);
-        setOpen(false);
-        return;
-      }
-      const hits = fuse.current.search(val).slice(0, 6).map((r) => r.item);
-      setResults(hits);
-      setOpen(hits.length > 0);
-    },
-    []
-  );
+  const allItems = [...localResults.map(p => ({ type: 'local' as const, item: p })),
+                   ...offResults.map(p => ({ type: 'off' as const, item: p }))];
+
+  const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const val = e.target.value;
+    setQuery(val);
+    setActiveIdx(-1);
+
+    if (val.trim().length === 0) {
+      setLocalResults([]);
+      setOffResults([]);
+      setOpen(false);
+      return;
+    }
+
+    const hits = fuse.current.search(val).slice(0, 6).map(r => r.item);
+    setLocalResults(hits);
+    setOpen(true);
+
+    // Fetch OFF only when local results are sparse
+    if (offDebounce.current) clearTimeout(offDebounce.current);
+    if (val.trim().length >= 3) {
+      offDebounce.current = setTimeout(async () => {
+        setOffLoading(true);
+        try {
+          const res = await fetch(`/api/search-off?q=${encodeURIComponent(val)}`);
+          if (res.ok) {
+            const data: OFFSearchResult[] = await res.json();
+            // Filter out duplicates with local results
+            const localNames = new Set(hits.map(p => p.naam.toLowerCase()));
+            const filtered = data.filter(p => !localNames.has(p.naam.toLowerCase()));
+            setOffResults(filtered.slice(0, 4));
+          }
+        } catch { /* ignore */ }
+        setOffLoading(false);
+      }, 500);
+    } else {
+      setOffResults([]);
+    }
+  }, []);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (!open) return;
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      setActiveIdx((i) => Math.min(i + 1, results.length - 1));
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      setActiveIdx((i) => Math.max(i - 1, -1));
-    } else if (e.key === 'Escape') {
-      setOpen(false);
-    } else if (e.key === 'Enter' && activeIdx >= 0) {
-      const product = results[activeIdx];
-      if (onSelect) {
-        onSelect(product);
-        setQuery('');
-        setOpen(false);
+    if (e.key === 'ArrowDown') { e.preventDefault(); setActiveIdx(i => Math.min(i + 1, allItems.length - 1)); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setActiveIdx(i => Math.max(i - 1, -1)); }
+    else if (e.key === 'Escape') setOpen(false);
+    else if (e.key === 'Enter' && activeIdx >= 0) {
+      const entry = allItems[activeIdx];
+      if (entry.type === 'local' && onSelect) {
+        onSelect(entry.item as Product);
+        setQuery(''); setOpen(false);
       }
     }
   };
 
-  const handleSelect = (product: Product) => {
-    if (onSelect) {
-      onSelect(product);
-      setQuery('');
-      setOpen(false);
-    }
+  const handleSelectLocal = (product: Product) => {
+    if (onSelect) { onSelect(product); setQuery(''); setOpen(false); }
   };
+
+  const hasResults = localResults.length > 0 || offResults.length > 0 || offLoading;
 
   return (
     <div className="relative w-full max-w-xl mx-auto">
@@ -92,7 +103,7 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
           value={query}
           onChange={handleChange}
           onKeyDown={handleKeyDown}
-          onFocus={() => results.length > 0 && setOpen(true)}
+          onFocus={() => hasResults && setOpen(true)}
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           placeholder={placeholder}
           autoComplete="off"
@@ -100,44 +111,65 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
         />
       </div>
 
-      {open && (
-        <ul
-          ref={listRef}
-          className="absolute z-50 w-full mt-2 bg-white rounded-2xl shadow-xl border border-[#e8e0d8] overflow-hidden"
-          role="listbox"
-        >
-          {results.map((product, idx) => {
+      {open && hasResults && (
+        <ul className="absolute z-50 w-full mt-2 bg-white rounded-2xl shadow-xl border border-[#e8e0d8] overflow-hidden">
+          {localResults.map((product, idx) => {
             const klontjes = suikerklontjes(product);
             return (
               <li key={product.id} role="option" aria-selected={idx === activeIdx}>
                 {onSelect ? (
-                  <button
-                    onMouseDown={() => handleSelect(product)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-[#fdf5f0] ${idx === activeIdx ? 'bg-[#fdf5f0]' : ''}`}
-                  >
+                  <button onMouseDown={() => handleSelectLocal(product)}
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#fdf5f0] transition-colors ${idx === activeIdx ? 'bg-[#fdf5f0]' : ''}`}>
                     <span className="text-2xl">{product.emoji}</span>
                     <span className="flex-1 font-medium text-gray-900">{product.naam}</span>
                     <span className="text-sm text-gray-500 flex items-center gap-1">
-                      <span className="text-base">🍬</span>
-                      {klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
+                      <span>🍬</span>{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
                     </span>
                   </button>
                 ) : (
-                  <Link
-                    href={`/product/${product.id}`}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left transition-colors hover:bg-[#fdf5f0] ${idx === activeIdx ? 'bg-[#fdf5f0]' : ''}`}
-                  >
+                  <Link href={`/product/${product.id}`}
+                    className={`flex items-center gap-3 px-4 py-3 hover:bg-[#fdf5f0] transition-colors ${idx === activeIdx ? 'bg-[#fdf5f0]' : ''}`}>
                     <span className="text-2xl">{product.emoji}</span>
                     <span className="flex-1 font-medium text-gray-900">{product.naam}</span>
                     <span className="text-sm text-gray-500 flex items-center gap-1">
-                      <span className="text-base">🍬</span>
-                      {klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
+                      <span>🍬</span>{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
                     </span>
                   </Link>
                 )}
               </li>
             );
           })}
+
+          {/* OFF results */}
+          {(offResults.length > 0 || offLoading) && (
+            <>
+              <li className="px-4 py-2 bg-gray-50 border-t border-[#e8e0d8]">
+                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+                  {offLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <span>🌍</span>}
+                  {offLoading ? 'Zoeken in Open Food Facts…' : 'Open Food Facts'}
+                </span>
+              </li>
+              {offResults.map((product, idx) => {
+                const klontjes = Math.round(product.koolhydratenPerPortie / 4);
+                const globalIdx = localResults.length + 1 + idx;
+                return (
+                  <li key={product.barcode} role="option" aria-selected={globalIdx === activeIdx}>
+                    <Link href={`/product/off/${product.barcode}`}
+                      className={`flex items-center gap-3 px-4 py-3 hover:bg-[#fdf5f0] transition-colors ${globalIdx === activeIdx ? 'bg-[#fdf5f0]' : ''}`}>
+                      <span className="text-2xl">🛒</span>
+                      <div className="flex-1 min-w-0">
+                        <div className="font-medium text-gray-900 truncate">{product.naam}</div>
+                        {product.merk && <div className="text-xs text-gray-400 truncate">{product.merk}</div>}
+                      </div>
+                      <span className="text-sm text-gray-500 flex items-center gap-1 flex-shrink-0">
+                        <span>🍬</span>{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
+                      </span>
+                    </Link>
+                  </li>
+                );
+              })}
+            </>
+          )}
         </ul>
       )}
     </div>
