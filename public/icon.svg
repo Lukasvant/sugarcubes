@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="112" fill="#e07a5f"/>
+  <!-- isometric sugar cube -->
+  <polygon points="256,100 420,188 256,276 92,188" fill="white"/>
+  <polygon points="256,276 420,188 420,324 256,412" fill="#e8e3db"/>
+  <polygon points="256,276 92,188 92,324 256,412" fill="#d6cfc5"/>
+  <!-- shine -->
+  <polygon points="256,112 400,192 256,264 112,184" fill="white" opacity="0.25"/>
+</svg>
