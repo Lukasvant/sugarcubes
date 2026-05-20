@@ -11,6 +11,7 @@ import GIBadge from '@/components/GIBadge';
 import GLBadge from '@/components/GLBadge';
 import CompareBar, { useCompare } from '@/components/CompareBar';
 import ProductIcon from '@/components/ProductIcon';
+import DieetBadges from '@/components/DieetBadges';
 
 const alleProducten = getAlleProducten();
 
@@ -61,11 +62,12 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
         </span>
       </div>
 
-      {/* Label */}
-      <div className="flex justify-center mb-8">
+      {/* Label + dieet badges */}
+      <div className="flex flex-col items-center gap-3 mb-8">
         <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-semibold border ${labelKleur}`}>
           {label}
         </span>
+        <DieetBadges koolhydratenPerPortie={product.koolhydratenPerPortie} />
       </div>
 
       {/* Sugar cube tower */}

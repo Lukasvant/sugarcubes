@@ -4,6 +4,7 @@ import { ArrowLeft } from 'lucide-react';
 import { lookupBarcode } from '@/lib/openfoodfacts';
 import SuikerklontjesToren from '@/components/SuikerklontjesToren';
 import { OFFIcon } from '@/components/ProductIcon';
+import DieetBadges from '@/components/DieetBadges';
 
 export default async function OFFProductPage({ params }: { params: Promise<{ barcode: string }> }) {
   const { barcode } = await params;
@@ -81,10 +82,11 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
         <span className="block text-lg text-gray-500 mt-1">suikerklontjes per portie</span>
       </div>
 
-      <div className="flex justify-center mb-8">
+      <div className="flex flex-col items-center gap-3 mb-8">
         <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-semibold border ${labelKleur}`}>
           {label}
         </span>
+        <DieetBadges koolhydratenPerPortie={product.koolhydratenPerPortie} />
       </div>
 
       {/* Tower */}

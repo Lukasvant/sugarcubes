@@ -12,6 +12,7 @@ import GIBadge from '@/components/GIBadge';
 import GLBadge from '@/components/GLBadge';
 import SearchBar from '@/components/SearchBar';
 import ProductIcon from '@/components/ProductIcon';
+import DieetBadges from '@/components/DieetBadges';
 
 const alleProducten = getAlleProducten();
 
@@ -139,6 +140,9 @@ function VergelijkInhoud() {
                       <GLBadge gl={product.glycemischeLading} />
                     </div>
                   )}
+                  <div className="pt-1">
+                    <DieetBadges koolhydratenPerPortie={product.koolhydratenPerPortie} size="sm" />
+                  </div>
                 </div>
               </div>
             );

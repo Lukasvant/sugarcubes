@@ -21,6 +21,14 @@ export function koolhydraatLabel(klontjes: number): string {
   return 'Dit zit vol koolhydraten';
 }
 
+export function isKeto(koolhydratenPerPortie: number): boolean {
+  return koolhydratenPerPortie <= 5;
+}
+
+export function isLowCarb(koolhydratenPerPortie: number): boolean {
+  return koolhydratenPerPortie <= 20;
+}
+
 export function giKlasse(gi: number): 'laag' | 'gemiddeld' | 'hoog' {
   if (gi <= 55) return 'laag';
   if (gi <= 69) return 'gemiddeld';
