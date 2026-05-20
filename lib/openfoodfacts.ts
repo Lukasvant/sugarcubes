@@ -2,16 +2,13 @@ export interface OFFProduct {
   code: string;
   product_name: string;
   product_name_nl?: string;
-  brands?: string;
+  brands?: string | string[];
   image_front_small_url?: string;
-  serving_size?: string;
   serving_quantity?: number;
   nutriments: {
     carbohydrates_100g?: number;
     carbohydrates_serving?: number;
-    energy_kcal_100g?: number;
   };
-  categories_tags?: string[];
 }
 
 export interface OFFSearchResult {
@@ -25,7 +22,14 @@ export interface OFFSearchResult {
 }
 
 const BASE = 'https://world.openfoodfacts.org';
-const FIELDS = 'code,product_name,product_name_nl,brands,serving_size,serving_quantity,nutriments,image_front_small_url,categories_tags';
+const SEARCH_BASE = 'https://search.openfoodfacts.org';
+const FIELDS = 'code,product_name,product_name_nl,brands,serving_quantity,nutriments,image_front_small_url';
+
+function brandString(brands: string | string[] | undefined): string | undefined {
+  if (!brands) return undefined;
+  if (Array.isArray(brands)) return brands[0]?.trim() || undefined;
+  return brands.split(',')[0].trim() || undefined;
+}
 
 function mapProduct(p: OFFProduct): OFFSearchResult | null {
   const naam = p.product_name_nl || p.product_name;
@@ -41,7 +45,7 @@ function mapProduct(p: OFFProduct): OFFSearchResult | null {
 
   return {
     naam,
-    merk: p.brands?.split(',')[0].trim(),
+    merk: brandString(p.brands),
     barcode: p.code,
     koolhydratenPer100g: Math.round(carbs100),
     portieGram: Math.round(portieGram),
@@ -52,11 +56,11 @@ function mapProduct(p: OFFProduct): OFFSearchResult | null {
 
 export async function searchOFF(query: string, max = 6): Promise<OFFSearchResult[]> {
   try {
-    const url = `${BASE}/cgi/search.pl?search_terms=${encodeURIComponent(query)}&search_simple=1&action=process&json=1&lc=nl&cc=nl&fields=${FIELDS}&page_size=20`;
+    const url = `${SEARCH_BASE}/search?q=${encodeURIComponent(query)}&fields=${FIELDS}&page_size=20`;
     const res = await fetch(url, { next: { revalidate: 3600 } });
     if (!res.ok) return [];
     const data = await res.json();
-    const products: OFFProduct[] = data.products ?? [];
+    const products: OFFProduct[] = data.hits ?? [];
     return products
       .map(mapProduct)
       .filter((p): p is OFFSearchResult => p !== null)
