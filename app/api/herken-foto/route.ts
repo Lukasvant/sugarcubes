@@ -1,7 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import Anthropic from '@anthropic-ai/sdk';
-
-const client = new Anthropic();
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const SYSTEM_PROMPT = `Je bent een voedingsdeskundige AI die voedingsproducten herkent op foto's.
 Geef ALLEEN een JSON-array terug met de namen van de herkende voedingsproducten in het Nederlands.
@@ -12,53 +10,43 @@ Voorbeeld output: ["banaan", "volkoren brood", "melk"]
 Geef ALLEEN de JSON-array terug, geen uitleg of andere tekst.`;
 
 const ALLOWED_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'] as const;
-type ImageMediaType = typeof ALLOWED_TYPES[number];
+type ImageMimeType = typeof ALLOWED_TYPES[number];
 
-function toMediaType(mimeType: string): ImageMediaType {
-  return ALLOWED_TYPES.includes(mimeType as ImageMediaType)
-    ? (mimeType as ImageMediaType)
-    : 'image/jpeg';
+function toMimeType(type: string): ImageMimeType {
+  return ALLOWED_TYPES.includes(type as ImageMimeType) ? (type as ImageMimeType) : 'image/jpeg';
 }
 
 export async function POST(req: NextRequest) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    return NextResponse.json({ error: 'AI niet geconfigureerd — voeg ANTHROPIC_API_KEY toe aan je omgevingsvariabelen.' }, { status: 503 });
+  if (!process.env.GOOGLE_AI_API_KEY) {
+    return NextResponse.json(
+      { error: 'AI niet geconfigureerd — voeg GOOGLE_AI_API_KEY toe aan je omgevingsvariabelen.' },
+      { status: 503 }
+    );
   }
 
   try {
     const formData = await req.formData();
     const file = formData.get('image') as File | null;
-
     if (!file) {
       return NextResponse.json({ error: 'Geen afbeelding ontvangen' }, { status: 400 });
     }
 
     const bytes = await file.arrayBuffer();
     const base64 = Buffer.from(bytes).toString('base64');
-    const mediaType = toMediaType(file.type);
+    const mimeType = toMimeType(file.type);
 
-    const response = await client.messages.create({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 512,
-      system: SYSTEM_PROMPT,
-      messages: [
-        {
-          role: 'user',
-          content: [
-            {
-              type: 'image',
-              source: { type: 'base64', media_type: mediaType, data: base64 },
-            },
-            {
-              type: 'text',
-              text: 'Welke voedingsproducten zie je op deze foto?',
-            },
-          ],
-        },
-      ],
+    const genAI = new GoogleGenerativeAI(process.env.GOOGLE_AI_API_KEY);
+    const model = genAI.getGenerativeModel({
+      model: 'gemini-2.0-flash',
+      systemInstruction: SYSTEM_PROMPT,
     });
 
-    const text = response.content[0].type === 'text' ? response.content[0].text : '[]';
+    const result = await model.generateContent([
+      { inlineData: { data: base64, mimeType } },
+      'Welke voedingsproducten zie je op deze foto?',
+    ]);
+
+    const text = result.response.text();
 
     let products: string[] = [];
     try {
