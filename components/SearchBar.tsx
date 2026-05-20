@@ -52,7 +52,6 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
     setLocalResults(hits);
     setOpen(true);
 
-    // Fetch OFF only when local results are sparse
     if (offDebounce.current) clearTimeout(offDebounce.current);
     if (val.trim().length >= 3) {
       offDebounce.current = setTimeout(async () => {
@@ -61,7 +60,6 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
           const res = await fetch(`/api/search-off?q=${encodeURIComponent(val)}`);
           if (res.ok) {
             const data: OFFSearchResult[] = await res.json();
-            // Filter out duplicates with local results
             const localNames = new Set(hits.map(p => p.naam.toLowerCase()));
             const filtered = data.filter(p => !localNames.has(p.naam.toLowerCase()));
             setOffResults(filtered.slice(0, 4));
@@ -97,7 +95,7 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
   return (
     <div className="relative w-full max-w-xl mx-auto">
       <div className="relative">
-        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 w-5 h-5 pointer-events-none" />
+        <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400 dark:text-neutral-500 w-4 h-4 pointer-events-none" />
         <input
           ref={inputRef}
           type="search"
@@ -108,40 +106,39 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           placeholder={placeholder}
           autoComplete="off"
-          className="w-full pl-12 pr-4 py-4 text-base rounded-2xl border-2 border-[#e2e8f0] bg-white shadow-sm focus:outline-none focus:border-[#0d9488] transition-colors placeholder:text-gray-400"
+          className="w-full pl-11 pr-4 py-3 text-sm rounded-full border border-neutral-300 dark:border-neutral-700 bg-transparent text-neutral-900 dark:text-neutral-100 focus:outline-none focus:border-neutral-900 dark:focus:border-neutral-100 transition-colors placeholder:text-neutral-400 dark:placeholder:text-neutral-500"
         />
       </div>
 
       {open && hasResults && (
-        <ul className="absolute z-50 w-full mt-2 bg-white rounded-2xl shadow-xl border border-[#e2e8f0] overflow-hidden">
+        <ul className="absolute z-50 w-full mt-2 bg-white dark:bg-neutral-900 rounded-xl shadow-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
           {localResults.map((product, idx) => {
             const klontjes = suikerklontjes(product);
             return (
               <li key={product.id} role="option" aria-selected={idx === activeIdx}>
                 {onSelect ? (
                   <button onMouseDown={() => handleSelectLocal(product)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f1f5f9] transition-colors ${idx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors ${idx === activeIdx ? 'bg-neutral-50 dark:bg-neutral-800' : ''} ${idx < localResults.length - 1 ? 'border-b border-neutral-100 dark:border-neutral-800' : ''}`}>
                     <ProductIcon categorie={product.categorie} size="sm" />
-                    <span className="flex-1 font-medium text-gray-900">{product.naam}</span>
-                    <span className="text-sm text-gray-500 tabular-nums">{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}</span>
+                    <span className="flex-1 text-sm font-medium text-neutral-900 dark:text-neutral-100">{product.naam}</span>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400 tabular-nums">{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}</span>
                   </button>
                 ) : (
                   <Link href={`/product/${product.id}`}
-                    className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f1f5f9] transition-colors ${idx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
+                    className={`flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors ${idx === activeIdx ? 'bg-neutral-50 dark:bg-neutral-800' : ''} ${idx < localResults.length - 1 ? 'border-b border-neutral-100 dark:border-neutral-800' : ''}`}>
                     <ProductIcon categorie={product.categorie} size="sm" />
-                    <span className="flex-1 font-medium text-gray-900">{product.naam}</span>
-                    <span className="text-sm text-gray-500 tabular-nums">{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}</span>
+                    <span className="flex-1 text-sm font-medium text-neutral-900 dark:text-neutral-100">{product.naam}</span>
+                    <span className="text-xs text-neutral-500 dark:text-neutral-400 tabular-nums">{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}</span>
                   </Link>
                 )}
               </li>
             );
           })}
 
-          {/* OFF results */}
           {(offResults.length > 0 || offLoading) && (
             <>
-              <li className="px-4 py-2 bg-gray-50 border-t border-[#e2e8f0]">
-                <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
+              <li className="px-4 py-2 bg-neutral-50 dark:bg-neutral-800 border-t border-neutral-200 dark:border-neutral-700">
+                <span className="text-xs font-semibold text-neutral-400 dark:text-neutral-500 uppercase tracking-wider flex items-center gap-1.5">
                   {offLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Globe className="w-3 h-3" />}
                   {offLoading ? 'Zoeken in Open Food Facts…' : 'Open Food Facts'}
                 </span>
@@ -152,18 +149,18 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
                 return (
                   <li key={product.barcode} role="option" aria-selected={globalIdx === activeIdx}>
                     <Link href={`/product/off/${product.barcode}`}
-                      className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f1f5f9] transition-colors ${globalIdx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
+                      className={`flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors border-t border-neutral-100 dark:border-neutral-800 ${globalIdx === activeIdx ? 'bg-neutral-50 dark:bg-neutral-800' : ''}`}>
                       {product.imageUrl ? (
                         // eslint-disable-next-line @next/next/no-img-element
-                        <img src={product.imageUrl} alt={product.naam} className="w-9 h-9 rounded-xl object-contain bg-gray-50 border border-[#e2e8f0] flex-shrink-0" />
+                        <img src={product.imageUrl} alt={product.naam} className="w-9 h-9 rounded-lg object-contain bg-neutral-50 dark:bg-neutral-800 border border-neutral-200 dark:border-neutral-700 flex-shrink-0" />
                       ) : (
                         <OFFIcon size="sm" />
                       )}
                       <div className="flex-1 min-w-0">
-                        <div className="font-medium text-gray-900 truncate">{product.naam}</div>
-                        {product.merk && <div className="text-xs text-gray-400 truncate">{product.merk}</div>}
+                        <div className="text-sm font-medium text-neutral-900 dark:text-neutral-100 truncate">{product.naam}</div>
+                        {product.merk && <div className="text-xs text-neutral-400 dark:text-neutral-500 truncate">{product.merk}</div>}
                       </div>
-                      <span className="text-sm text-gray-500 tabular-nums flex-shrink-0">
+                      <span className="text-xs text-neutral-500 dark:text-neutral-400 tabular-nums flex-shrink-0">
                         {klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
                       </span>
                     </Link>
