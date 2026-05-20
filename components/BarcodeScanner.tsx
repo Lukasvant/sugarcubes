@@ -81,7 +81,7 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
     return (
       <div className="fixed inset-0 z-50 bg-black flex flex-col items-center justify-center text-white px-8 text-center">
         <p className="text-lg font-semibold mb-2">Barcodescanner niet beschikbaar</p>
-        <p className="text-sm text-gray-400 mb-6">
+        <p className="text-sm text-neutral-400 mb-6">
           Gebruik Safari 17+ of Chrome op Android. Je kunt ook het barcodenummer handmatig invoeren.
         </p>
         <button onClick={onClose} className="bg-white text-black font-semibold px-6 py-2.5 rounded-xl">
@@ -107,11 +107,11 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           <div className="relative w-64 h-40">
             {/* Corner markers */}
             {['top-0 left-0', 'top-0 right-0 rotate-90', 'bottom-0 right-0 rotate-180', 'bottom-0 left-0 -rotate-90'].map((pos, i) => (
-              <div key={i} className={`absolute ${pos} w-8 h-8 border-[#0d9488]`}
+              <div key={i} className={`absolute ${pos} w-8 h-8 border-white`}
                 style={{ borderTopWidth: 3, borderLeftWidth: 3 }} />
             ))}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-full h-0.5 bg-[#0d9488] opacity-60 animate-pulse" />
+              <div className="w-full h-0.5 bg-white opacity-60 animate-pulse" />
             </div>
           </div>
         </div>
