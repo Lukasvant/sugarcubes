@@ -86,7 +86,7 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
         <span className={`inline-block px-4 py-1.5 rounded-full text-sm font-semibold border ${labelKleur}`}>
           {label}
         </span>
-        <DieetBadges koolhydratenPerPortie={product.koolhydratenPerPortie} />
+        <DieetBadges koolhydratenPerPortie={product.koolhydratenPerPortie} alwaysShow />
       </div>
 
       {/* Tower */}
