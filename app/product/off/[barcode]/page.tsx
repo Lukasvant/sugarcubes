@@ -5,6 +5,7 @@ import { lookupBarcode } from '@/lib/openfoodfacts';
 import SuikerklontjesToren from '@/components/SuikerklontjesToren';
 import { OFFIcon } from '@/components/ProductIcon';
 import DieetBadges from '@/components/DieetBadges';
+import ShareButton from '@/components/ShareButton';
 
 export default async function OFFProductPage({ params }: { params: Promise<{ barcode: string }> }) {
   const { barcode } = await params;
@@ -111,7 +112,18 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
         <div className="px-6 py-4 text-sm text-neutral-400 dark:text-neutral-500">
           GI en GL niet beschikbaar via Open Food Facts.
         </div>
+        {product.portieGram === 100 && (
+          <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-2 text-center">
+            Portiegrootte niet beschikbaar — koolhydraten berekend per 100g.
+          </p>
+        )}
       </div>
+
+      {/* Share button */}
+      <ShareButton
+        title={product.naam}
+        text={`${product.naam} bevat ${klontjes} suikerklontjes per portie`}
+      />
 
       {/* OFF badge */}
       <div className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-4 text-sm text-neutral-500 dark:text-neutral-400 flex items-center gap-3">

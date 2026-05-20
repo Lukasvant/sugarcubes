@@ -15,7 +15,7 @@ interface SearchBarProps {
   placeholder?: string;
 }
 
-export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een product, bijv. "banaan" of "pasta"…' }: SearchBarProps) {
+export default function SearchBar({ producten, onSelect, placeholder = 'Zoek product…' }: SearchBarProps) {
   const [query, setQuery] = useState('');
   const [localResults, setLocalResults] = useState<Product[]>([]);
   const [offResults, setOffResults] = useState<OFFSearchResult[]>([]);

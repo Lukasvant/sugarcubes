@@ -9,6 +9,7 @@ import BarcodeScanner from '@/components/BarcodeScanner';
 export default function ScanPage() {
   const router = useRouter();
   const [scanning, setScanning] = useState(false);
+  const [hadScanner, setHadScanner] = useState(false);
   const [manualCode, setManualCode] = useState('');
 
   const handleScan = (barcode: string) => {
@@ -45,12 +46,24 @@ export default function ScanPage() {
         </div>
 
         <button
-          onClick={() => setScanning(true)}
-          className="w-full flex items-center justify-center gap-3 bg-neutral-900 dark:bg-white text-white dark:text-black font-semibold py-4 rounded-full transition-colors text-sm mb-8"
+          onClick={() => { setScanning(true); setHadScanner(true); }}
+          className="w-full flex items-center justify-center gap-3 bg-neutral-900 dark:bg-white text-white dark:text-black font-semibold py-4 rounded-full transition-colors text-sm mb-4"
         >
           <ScanBarcode className="w-5 h-5" />
           Camera openen
         </button>
+
+        {hadScanner && !scanning && (
+          <button
+            onClick={() => setScanning(true)}
+            className="w-full flex items-center justify-center gap-3 py-3 rounded-full text-sm font-medium border border-neutral-300 dark:border-neutral-700 text-neutral-600 dark:text-neutral-300 hover:border-neutral-900 dark:hover:border-neutral-100 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors mb-4"
+          >
+            <ScanBarcode className="w-4 h-4" />
+            Opnieuw scannen
+          </button>
+        )}
+
+        <div className="mb-4" />
 
         <div className="relative mb-8">
           <div className="absolute inset-0 flex items-center">

@@ -14,17 +14,21 @@ export const viewport: Viewport = {
 
 export const metadata: Metadata = {
   title: 'Suikerklontjes — zie hoeveel koolhydraten je eet',
-  description: 'Ontdek hoeveel suikerklontjes er in je eten zitten. Een koolhydraten-visualizer voor iedereen.',
+  description: 'Ontdek hoeveel suikerklontjes er in je eten zitten. Voor keto, low carb en diabetes.',
   manifest: '/manifest.json',
-  appleWebApp: {
-    capable: true,
-    statusBarStyle: 'default',
+  openGraph: {
     title: 'Suikerklontjes',
+    description: 'Zie hoeveel suikerklontjes er in jouw eten zitten. 1 klontje = 4g koolhydraten.',
+    type: 'website',
+    locale: 'nl_NL',
   },
-  icons: {
-    icon: '/icon.svg',
-    apple: '/icon.svg',
+  twitter: {
+    card: 'summary',
+    title: 'Suikerklontjes',
+    description: 'Zie hoeveel suikerklontjes er in jouw eten zitten.',
   },
+  appleWebApp: { capable: true, statusBarStyle: 'default', title: 'Suikerklontjes' },
+  icons: { icon: '/icon.svg', apple: '/icon.svg' },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

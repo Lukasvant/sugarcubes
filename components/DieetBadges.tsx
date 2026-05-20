@@ -17,13 +17,20 @@ export default function DieetBadges({ koolhydratenPerPortie, size = 'md', always
     : 'inline-flex items-center gap-1.5 px-3 py-1 rounded-lg text-sm font-semibold';
 
   return (
-    <div className="flex flex-wrap gap-2">
-      <span className={`${base} ${keto ? 'bg-emerald-700 text-white' : 'bg-gray-100 text-gray-400 line-through'}`}>
-        {keto ? '✓' : '✗'} Keto
-      </span>
-      <span className={`${base} ${lowCarb ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-gray-100 text-gray-400 line-through'}`}>
-        {lowCarb ? '✓' : '✗'} Low carb
-      </span>
-    </div>
+    <>
+      <div className="flex flex-wrap gap-2">
+        <span className={`${base} ${keto ? 'bg-emerald-700 text-white' : 'bg-gray-100 text-gray-400 line-through'}`}>
+          {keto ? '✓' : '✗'} Keto
+        </span>
+        <span className={`${base} ${lowCarb ? 'bg-emerald-100 text-emerald-800 border border-emerald-200' : 'bg-gray-100 text-gray-400 line-through'}`}>
+          {lowCarb ? '✓' : '✗'} Low carb
+        </span>
+      </div>
+      {alwaysShow && (
+        <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-1 text-center">
+          Keto ≤ 5g · Low carb ≤ 20g koolhydraten per portie
+        </p>
+      )}
+    </>
   );
 }

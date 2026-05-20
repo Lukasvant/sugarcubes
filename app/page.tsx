@@ -1,13 +1,16 @@
 'use client';
 
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { Camera } from 'lucide-react';
 import SearchBar from '@/components/SearchBar';
 import CompareBar, { useCompare } from '@/components/CompareBar';
 import ProductIcon from '@/components/ProductIcon';
 import { getAlleProducten } from '@/lib/data';
 import { suikerklontjes } from '@/lib/types';
 import type { Product } from '@/lib/types';
+import { getHistory } from '@/lib/history';
 
 const producten = getAlleProducten();
 
@@ -17,11 +20,20 @@ export default function HomePage() {
   const router = useRouter();
   const { ids, toggle, clear } = useCompare();
 
+  const [historyIds, setHistoryIds] = useState<string[]>([]);
+  useEffect(() => {
+    setHistoryIds(getHistory());
+  }, []);
+
   const handleSelect = (product: Product) => {
     router.push(`/product/${product.id}`);
   };
 
   const uitgelicht = uitgelichtIds
+    .map((id) => producten.find((p) => p.id === id))
+    .filter(Boolean) as Product[];
+
+  const historyProducten = historyIds
     .map((id) => producten.find((p) => p.id === id))
     .filter(Boolean) as Product[];
 
@@ -33,6 +45,9 @@ export default function HomePage() {
         </h1>
         <p className="text-neutral-500 dark:text-neutral-400 text-sm max-w-sm">
           1 klontje = 4g koolhydraten. Zoek een product en zie het meteen.
+        </p>
+        <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-1">
+          Voor keto, low carb, diabetes — of gewoon benieuwd.
         </p>
       </div>
 
@@ -75,6 +90,32 @@ export default function HomePage() {
         </div>
       </div>
 
+      {historyProducten.length > 0 && (
+        <div className="mt-8">
+          <p className="text-xs font-medium text-neutral-400 dark:text-neutral-500 mb-3 uppercase tracking-wider">
+            Recentelijk bekeken
+          </p>
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden">
+            {historyProducten.slice(0, 5).map((product, index) => {
+              const klontjes = suikerklontjes(product);
+              return (
+                <Link
+                  key={product.id}
+                  href={`/product/${product.id}`}
+                  className={`flex items-center gap-3 px-4 py-3 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors ${index < Math.min(historyProducten.length, 5) - 1 ? 'border-b border-neutral-200 dark:border-neutral-800' : ''}`}
+                >
+                  <ProductIcon categorie={product.categorie} size="sm" />
+                  <span className="flex-1 font-medium text-neutral-900 dark:text-neutral-100 text-sm tracking-tight truncate">{product.naam}</span>
+                  <span className="text-xs text-neutral-500 dark:text-neutral-400 tabular-nums">
+                    {klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
+                  </span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
+
       <div className="mt-8 border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden">
         <Link
           href="/regels"
@@ -95,7 +136,7 @@ export default function HomePage() {
         </Link>
         <Link
           href="/uitleg"
-          className="flex items-center gap-4 px-4 py-4 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors group"
+          className="flex items-center gap-4 px-4 py-4 border-b border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors group"
         >
           <div className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-800 flex items-center justify-center flex-shrink-0">
             <svg className="w-4 h-4 text-neutral-600 dark:text-neutral-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
@@ -106,6 +147,21 @@ export default function HomePage() {
             <div className="font-medium text-neutral-900 dark:text-neutral-100 text-sm tracking-tight">Wat is de glycemische index?</div>
             <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
               GI en GL uitgelegd zonder jargon. Twee minuten lezen.
+            </div>
+          </div>
+          <span className="text-neutral-400 dark:text-neutral-500 text-sm">→</span>
+        </Link>
+        <Link
+          href="/foto"
+          className="flex items-center gap-4 px-4 py-4 border-t border-neutral-200 dark:border-neutral-800 hover:bg-neutral-50 dark:hover:bg-neutral-900 transition-colors group"
+        >
+          <div className="w-8 h-8 rounded-full border border-neutral-200 dark:border-neutral-800 flex items-center justify-center flex-shrink-0">
+            <Camera className="w-4 h-4 text-neutral-600 dark:text-neutral-400" />
+          </div>
+          <div className="flex-1 min-w-0">
+            <div className="font-medium text-neutral-900 dark:text-neutral-100 text-sm tracking-tight">AI Foto herkenning</div>
+            <div className="text-xs text-neutral-500 dark:text-neutral-400 mt-0.5">
+              Foto van een product? AI herkent het en toont de suikerklontjes.
             </div>
           </div>
           <span className="text-neutral-400 dark:text-neutral-500 text-sm">→</span>
