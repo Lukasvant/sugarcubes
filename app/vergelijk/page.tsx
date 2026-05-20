@@ -43,14 +43,14 @@ function VergelijkInhoud() {
     <div className="max-w-4xl mx-auto px-4 py-8">
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8"
+        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Terug naar zoeken
       </Link>
 
-      <h1 className="text-3xl font-bold text-gray-900 mb-2">Vergelijken</h1>
-      <p className="text-gray-500 mb-8">Zet 2–3 producten naast elkaar en zie het verschil.</p>
+      <h1 className="text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 mb-2">Vergelijken</h1>
+      <p className="text-neutral-500 dark:text-neutral-400 text-sm mb-8">Zet 2–3 producten naast elkaar en zie het verschil.</p>
 
       {/* Add product */}
       {selected.length < 3 && (
@@ -64,7 +64,7 @@ function VergelijkInhoud() {
               />
               <button
                 onClick={() => setZoekOpen(false)}
-                className="mt-2 text-sm text-gray-400 hover:text-gray-600"
+                className="mt-2 text-sm text-neutral-400 hover:text-neutral-600 dark:hover:text-neutral-300"
               >
                 Annuleer
               </button>
@@ -72,7 +72,7 @@ function VergelijkInhoud() {
           ) : (
             <button
               onClick={() => setZoekOpen(true)}
-              className="flex items-center gap-2 bg-white border-2 border-dashed border-[#e2e8f0] rounded-2xl px-5 py-3 text-sm font-medium text-gray-500 hover:border-[#0d9488] hover:text-[#0d9488] transition-colors"
+              className="flex items-center gap-2 bg-white dark:bg-neutral-900 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-full px-5 py-3 text-sm font-medium text-neutral-500 dark:text-neutral-400 hover:border-neutral-900 dark:hover:border-neutral-100 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors"
             >
               <Search className="w-4 h-4" />
               Voeg product toe{selected.length === 0 ? '' : ` (${3 - selected.length} nog mogelijk)`}
@@ -82,10 +82,10 @@ function VergelijkInhoud() {
       )}
 
       {selected.length === 0 && (
-        <div className="text-center py-20 text-gray-400">
-          <Search className="w-10 h-10 mx-auto mb-4 text-gray-300" />
-          <p className="text-lg">Voeg producten toe om te vergelijken.</p>
-          <p className="text-sm mt-2">Tip: ga naar een productpagina en klik "Voeg toe aan vergelijking"</p>
+        <div className="text-center py-20 text-neutral-400 dark:text-neutral-500">
+          <Search className="w-10 h-10 mx-auto mb-4 text-neutral-300 dark:text-neutral-700" />
+          <p className="text-sm">Voeg producten toe om te vergelijken.</p>
+          <p className="text-xs mt-2">Tip: ga naar een productpagina en klik &ldquo;Voeg toe aan vergelijking&rdquo;</p>
         </div>
       )}
 
@@ -95,11 +95,11 @@ function VergelijkInhoud() {
           {selected.map((product) => {
             const klontjes = suikerklontjes(product);
             return (
-              <div key={product.id} className="bg-white rounded-3xl border border-[#e2e8f0] overflow-hidden">
-                <div className="p-5 border-b border-[#e2e8f0] relative">
+              <div key={product.id} className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
+                <div className="p-5 border-b border-neutral-200 dark:border-neutral-800 relative">
                   <button
                     onClick={() => removeProduct(product.id)}
-                    className="absolute top-3 right-3 text-gray-300 hover:text-red-400 transition-colors text-lg leading-none"
+                    className="absolute top-3 right-3 text-neutral-300 dark:text-neutral-700 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors text-lg leading-none"
                     aria-label={`Verwijder ${product.naam}`}
                   >
                     ×
@@ -107,36 +107,36 @@ function VergelijkInhoud() {
                   <div className="flex justify-center mb-2">
                     <ProductIcon categorie={product.categorie} size="sm" />
                   </div>
-                  <h2 className="font-semibold text-gray-900 text-center text-sm">{product.naam}</h2>
-                  <p className="text-xs text-gray-400 text-center mt-0.5">{product.portieBeschrijving}</p>
+                  <h2 className="font-semibold text-neutral-900 dark:text-neutral-100 text-center text-sm tracking-tight">{product.naam}</h2>
+                  <p className="text-xs text-neutral-400 dark:text-neutral-500 text-center mt-0.5">{product.portieBeschrijving}</p>
                 </div>
 
                 {/* Klontjes count */}
-                <div className="py-4 text-center border-b border-[#e2e8f0]">
-                  <span className="text-5xl font-black text-gray-900">{klontjes}</span>
-                  <span className="block text-xs text-gray-400 mt-1">klontjes</span>
+                <div className="py-4 text-center border-b border-neutral-200 dark:border-neutral-800">
+                  <span className="text-5xl font-black text-neutral-900 dark:text-neutral-100">{klontjes}</span>
+                  <span className="block text-xs text-neutral-400 dark:text-neutral-500 mt-1">klontjes</span>
                 </div>
 
                 {/* Mini tower */}
-                <div className="py-4 px-3 flex justify-center border-b border-[#e2e8f0]">
+                <div className="py-4 px-3 flex justify-center border-b border-neutral-200 dark:border-neutral-800">
                   <SuikerklontjesToren klontjes={klontjes} />
                 </div>
 
                 {/* Stats */}
                 <div className="p-4 space-y-2 text-xs">
                   <div className="flex justify-between">
-                    <span className="text-gray-500">Koolhydraten</span>
-                    <span className="font-medium">{product.koolhydratenPerPortie}g</span>
+                    <span className="text-neutral-500 dark:text-neutral-400">Koolhydraten</span>
+                    <span className="font-medium text-neutral-900 dark:text-neutral-100">{product.koolhydratenPerPortie}g</span>
                   </div>
                   {product.glycemischeIndex !== null && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-500">GI</span>
+                      <span className="text-neutral-500 dark:text-neutral-400">GI</span>
                       <GIBadge gi={product.glycemischeIndex} />
                     </div>
                   )}
                   {product.glycemischeLading !== null && (
                     <div className="flex justify-between items-center">
-                      <span className="text-gray-500">GL</span>
+                      <span className="text-neutral-500 dark:text-neutral-400">GL</span>
                       <GLBadge gl={product.glycemischeLading} />
                     </div>
                   )}
@@ -158,7 +158,7 @@ function VergelijkInhoud() {
         const diff = suikerklontjes(verliezer) - suikerklontjes(winnaar);
         if (diff === 0) return null;
         return (
-          <div className="mt-6 bg-emerald-50 border border-emerald-200 rounded-2xl p-5 text-sm text-emerald-800">
+          <div className="mt-6 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800 rounded-xl p-5 text-sm text-neutral-700 dark:text-neutral-300">
             <strong>{winnaar.naam}</strong> heeft {diff} suikerklontje{diff !== 1 ? 's' : ''} minder dan{' '}
             <strong>{verliezer.naam}</strong> per portie.
           </div>

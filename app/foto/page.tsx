@@ -40,7 +40,6 @@ export default function FotoPage() {
     setPreview(url);
 
     try {
-      // Compress image client-side
       const img = new Image();
       await new Promise<void>((resolve, reject) => {
         img.onload = () => resolve();
@@ -94,16 +93,15 @@ export default function FotoPage() {
     <div className="max-w-2xl mx-auto px-4 py-8">
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8"
+        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Terug
       </Link>
 
-      <div className="text-center mb-8">
-        <div className="text-5xl mb-3">📸</div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Foto herkenning</h1>
-        <p className="text-gray-500 text-sm">
+      <div className="mb-8">
+        <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 mb-2">Foto herkenning</h1>
+        <p className="text-neutral-500 dark:text-neutral-400 text-sm">
           Maak een foto van één of meerdere producten en AI herkent ze voor je.
         </p>
       </div>
@@ -113,10 +111,10 @@ export default function FotoPage() {
         <div className="grid grid-cols-2 gap-4 mb-6">
           <button
             onClick={() => cameraRef.current?.click()}
-            className="flex flex-col items-center gap-3 bg-white border-2 border-dashed border-[#e2e8f0] rounded-2xl p-8 hover:border-[#0d9488] hover:bg-[#f1f5f9] transition-colors"
+            className="flex flex-col items-center gap-3 bg-white dark:bg-neutral-900 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 hover:border-neutral-900 dark:hover:border-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
           >
-            <Camera className="w-8 h-8 text-[#0d9488]" />
-            <span className="font-medium text-gray-700 text-sm">Camera</span>
+            <Camera className="w-8 h-8 text-neutral-400 dark:text-neutral-500" />
+            <span className="font-medium text-neutral-700 dark:text-neutral-300 text-sm">Camera</span>
             <input
               ref={cameraRef}
               type="file"
@@ -129,10 +127,10 @@ export default function FotoPage() {
 
           <button
             onClick={() => fileRef.current?.click()}
-            className="flex flex-col items-center gap-3 bg-white border-2 border-dashed border-[#e2e8f0] rounded-2xl p-8 hover:border-[#0d9488] hover:bg-[#f1f5f9] transition-colors"
+            className="flex flex-col items-center gap-3 bg-white dark:bg-neutral-900 border border-dashed border-neutral-300 dark:border-neutral-700 rounded-xl p-8 hover:border-neutral-900 dark:hover:border-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
           >
-            <Upload className="w-8 h-8 text-[#0d9488]" />
-            <span className="font-medium text-gray-700 text-sm">Uploaden</span>
+            <Upload className="w-8 h-8 text-neutral-400 dark:text-neutral-500" />
+            <span className="font-medium text-neutral-700 dark:text-neutral-300 text-sm">Uploaden</span>
             <input
               ref={fileRef}
               type="file"
@@ -151,12 +149,12 @@ export default function FotoPage() {
           <img
             src={preview}
             alt="Geüploade foto"
-            className="w-full rounded-2xl object-contain max-h-72 bg-gray-50 border border-[#e2e8f0]"
+            className="w-full rounded-xl object-contain max-h-72 bg-neutral-50 dark:bg-neutral-900 border border-neutral-200 dark:border-neutral-800"
           />
           {!loading && (
             <button
               onClick={reset}
-              className="absolute top-3 right-3 bg-white/90 backdrop-blur-sm text-gray-700 rounded-full px-3 py-1.5 text-sm font-medium flex items-center gap-1.5 shadow hover:bg-white transition"
+              className="absolute top-3 right-3 bg-white/90 dark:bg-black/80 backdrop-blur-sm text-neutral-700 dark:text-neutral-300 rounded-full px-3 py-1.5 text-sm font-medium flex items-center gap-1.5 shadow hover:bg-white dark:hover:bg-black transition"
             >
               <RefreshCw className="w-3.5 h-3.5" />
               Nieuwe foto
@@ -167,15 +165,15 @@ export default function FotoPage() {
 
       {/* Loading */}
       {loading && (
-        <div className="flex flex-col items-center gap-3 py-10 text-gray-500">
-          <Loader2 className="w-8 h-8 animate-spin text-[#0d9488]" />
+        <div className="flex flex-col items-center gap-3 py-10 text-neutral-500 dark:text-neutral-400">
+          <Loader2 className="w-8 h-8 animate-spin" />
           <p className="text-sm">AI herkent producten…</p>
         </div>
       )}
 
       {/* Error */}
       {error && (
-        <div className="bg-red-50 border border-red-200 text-red-700 rounded-2xl px-5 py-4 text-sm mb-6">
+        <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-5 py-4 text-sm mb-6">
           {error}
         </div>
       )}
@@ -183,19 +181,19 @@ export default function FotoPage() {
       {/* Results */}
       {results && !loading && (
         <div>
-          <h2 className="font-semibold text-gray-900 mb-4">
+          <h2 className="font-semibold text-sm text-neutral-900 dark:text-neutral-100 mb-4">
             {results.length === 0
               ? 'Geen producten herkend'
               : `${results.length} product${results.length === 1 ? '' : 'en'} herkend`}
           </h2>
 
           {results.length === 0 && (
-            <p className="text-gray-400 text-sm mb-6">
+            <p className="text-neutral-400 dark:text-neutral-500 text-sm mb-6">
               Probeer een duidelijkere foto met goed zichtbare verpakkingen of voedingsmiddelen.
             </p>
           )}
 
-          <div className="flex flex-col gap-4">
+          <div className="border border-neutral-200 dark:border-neutral-800 rounded-xl overflow-hidden">
             {results.map((item, idx) => {
               if (item.match) {
                 const klontjes = suikerklontjes(item.match);
@@ -210,12 +208,12 @@ export default function FotoPage() {
                   <Link
                     key={idx}
                     href={`/product/${item.match.id}`}
-                    className="bg-white border border-[#e2e8f0] rounded-2xl p-5 flex items-center gap-4 hover:border-[#0d9488] hover:bg-[#f1f5f9] transition-colors"
+                    className={`bg-white dark:bg-neutral-900 p-4 flex items-center gap-4 hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors ${idx < results.length - 1 ? 'border-b border-neutral-200 dark:border-neutral-800' : ''}`}
                   >
                     <ProductIcon categorie={item.match.categorie} size="md" />
                     <div className="flex-1 min-w-0">
-                      <div className="font-semibold text-gray-900">{item.match.naam}</div>
-                      <div className="text-xs text-gray-400 mt-0.5">Herkend als: {item.naam}</div>
+                      <div className="font-semibold text-sm text-neutral-900 dark:text-neutral-100 tracking-tight">{item.match.naam}</div>
+                      <div className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">Herkend als: {item.naam}</div>
                       <div className={`inline-block mt-1.5 px-2.5 py-0.5 rounded-full text-xs font-semibold border ${labelKleur}`}>
                         {klontjes} suikerklontje{klontjes === 1 ? '' : 's'}
                       </div>
@@ -230,16 +228,16 @@ export default function FotoPage() {
               return (
                 <div
                   key={idx}
-                  className="bg-white border border-[#e2e8f0] rounded-2xl p-5 flex items-center gap-4 opacity-60"
+                  className={`bg-white dark:bg-neutral-900 p-4 flex items-center gap-4 opacity-60 ${idx < results.length - 1 ? 'border-b border-neutral-200 dark:border-neutral-800' : ''}`}
                 >
-                  <div className="w-12 h-12 rounded-2xl bg-gray-100 flex items-center justify-center flex-shrink-0">
-                    <svg className="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                  <div className="w-10 h-10 rounded-xl bg-neutral-100 dark:bg-neutral-800 flex items-center justify-center flex-shrink-0">
+                    <svg className="w-5 h-5 text-neutral-400" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
                       <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
                     </svg>
                   </div>
                   <div className="flex-1">
-                    <div className="font-semibold text-gray-900">{item.naam}</div>
-                    <div className="text-xs text-gray-400 mt-0.5">Niet gevonden in database</div>
+                    <div className="font-semibold text-sm text-neutral-900 dark:text-neutral-100">{item.naam}</div>
+                    <div className="text-xs text-neutral-400 dark:text-neutral-500 mt-0.5">Niet gevonden in database</div>
                   </div>
                 </div>
               );
@@ -248,7 +246,7 @@ export default function FotoPage() {
 
           <button
             onClick={reset}
-            className="mt-6 w-full flex items-center justify-center gap-2 bg-[#0d9488] text-white font-semibold py-3 rounded-xl hover:bg-[#0f766e] transition-colors"
+            className="mt-6 w-full flex items-center justify-center gap-2 bg-neutral-900 dark:bg-white text-white dark:text-black font-semibold py-3 rounded-full text-sm transition-colors"
           >
             <Camera className="w-5 h-5" />
             Nieuwe foto maken

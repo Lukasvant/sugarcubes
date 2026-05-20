@@ -39,7 +39,7 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
       {/* Back */}
       <Link
         href="/"
-        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8"
+        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Terug naar zoeken
@@ -50,14 +50,14 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
         <div className="flex justify-center mb-4">
           <ProductIcon categorie={product.categorie} size="lg" />
         </div>
-        <h1 className="text-3xl font-bold text-gray-900">{product.naam}</h1>
-        <p className="text-gray-500 mt-1">{product.portieBeschrijving}</p>
+        <h1 className="text-3xl font-bold text-neutral-900 dark:text-neutral-100 tracking-tight">{product.naam}</h1>
+        <p className="text-neutral-500 dark:text-neutral-400 mt-1 text-sm">{product.portieBeschrijving}</p>
       </div>
 
       {/* Klontjes count — hero number */}
       <div className="text-center mb-2">
-        <span className="text-8xl font-black text-gray-900 leading-none tabular-nums">{klontjes}</span>
-        <span className="block text-lg text-gray-500 mt-1">
+        <span className="text-8xl font-black text-neutral-900 dark:text-neutral-100 leading-none tabular-nums">{klontjes}</span>
+        <span className="block text-lg text-neutral-500 dark:text-neutral-400 mt-1">
           suikerklontjes per portie
         </span>
       </div>
@@ -71,39 +71,39 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
       </div>
 
       {/* Sugar cube tower */}
-      <div className="bg-white rounded-3xl border border-[#e2e8f0] p-8 mb-6 flex flex-col items-center">
+      <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-8 mb-6 flex flex-col items-center">
         <SuikerklontjesToren klontjes={klontjes} />
-        <p className="text-xs text-gray-400 mt-4">1 klontje = 4g koolhydraten</p>
+        <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-4">1 klontje = 4g koolhydraten</p>
       </div>
 
       {/* Stats */}
-      <div className="bg-white rounded-3xl border border-[#e2e8f0] divide-y divide-[#e2e8f0] mb-6">
+      <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 divide-y divide-neutral-200 dark:divide-neutral-800 mb-6">
         <div className="px-6 py-4 flex justify-between items-center">
-          <span className="text-gray-600">Koolhydraten per portie</span>
-          <span className="font-semibold text-gray-900">{product.koolhydratenPerPortie}g</span>
+          <span className="text-sm text-neutral-600 dark:text-neutral-400">Koolhydraten per portie</span>
+          <span className="font-semibold text-sm text-neutral-900 dark:text-neutral-100">{product.koolhydratenPerPortie}g</span>
         </div>
         <div className="px-6 py-4 flex justify-between items-center">
-          <span className="text-gray-600">Portiegrootte</span>
-          <span className="font-semibold text-gray-900">{product.portieGram}g</span>
+          <span className="text-sm text-neutral-600 dark:text-neutral-400">Portiegrootte</span>
+          <span className="font-semibold text-sm text-neutral-900 dark:text-neutral-100">{product.portieGram}g</span>
         </div>
         <div className="px-6 py-4 flex justify-between items-center">
-          <span className="text-gray-600">Portie</span>
-          <span className="font-medium text-gray-700 text-right max-w-[60%]">{product.portieBeschrijving}</span>
+          <span className="text-sm text-neutral-600 dark:text-neutral-400">Portie</span>
+          <span className="font-medium text-sm text-neutral-700 dark:text-neutral-300 text-right max-w-[60%]">{product.portieBeschrijving}</span>
         </div>
         {product.glycemischeIndex !== null && (
           <div className="px-6 py-4 flex justify-between items-center flex-wrap gap-2">
-            <span className="text-gray-600">Glycemische index</span>
+            <span className="text-sm text-neutral-600 dark:text-neutral-400">Glycemische index</span>
             <GIBadge gi={product.glycemischeIndex} />
           </div>
         )}
         {product.glycemischeLading !== null && (
           <div className="px-6 py-4 flex justify-between items-center flex-wrap gap-2">
-            <span className="text-gray-600">Glycemische lading</span>
+            <span className="text-sm text-neutral-600 dark:text-neutral-400">Glycemische lading</span>
             <GLBadge gl={product.glycemischeLading} />
           </div>
         )}
         {product.glycemischeIndex === null && (
-          <div className="px-6 py-4 text-sm text-gray-400">
+          <div className="px-6 py-4 text-sm text-neutral-400 dark:text-neutral-500">
             Geen GI/GL beschikbaar — dit product bevat nauwelijks koolhydraten.
           </div>
         )}
@@ -112,10 +112,10 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
       {/* Compare button */}
       <button
         onClick={() => toggle(product.id)}
-        className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-medium transition-colors mb-6 ${
+        className={`w-full flex items-center justify-center gap-2 py-3 rounded-full font-medium text-sm transition-colors mb-6 ${
           inVergelijk
-            ? 'bg-[#0d9488] text-white hover:bg-[#0f766e]'
-            : 'bg-white border-2 border-[#0d9488] text-[#0d9488] hover:bg-[#f1f5f9]'
+            ? 'bg-neutral-900 dark:bg-white text-white dark:text-black'
+            : 'bg-white dark:bg-neutral-900 border border-neutral-900 dark:border-neutral-100 text-neutral-900 dark:text-neutral-100 hover:bg-neutral-50 dark:hover:bg-neutral-800'
         }`}
       >
         {inVergelijk ? (
@@ -132,22 +132,22 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
       </button>
 
       {/* Uitleg inklapbaar */}
-      <div className="bg-white rounded-3xl border border-[#e2e8f0] overflow-hidden">
+      <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 overflow-hidden">
         <button
           onClick={() => setUitlegOpen((v) => !v)}
-          className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-[#f1f5f9] transition-colors"
+          className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-neutral-50 dark:hover:bg-neutral-800 transition-colors"
         >
-          <span className="font-semibold text-gray-900">Wat betekent dit?</span>
+          <span className="font-semibold text-sm text-neutral-900 dark:text-neutral-100">Wat betekent dit?</span>
           {uitlegOpen ? (
-            <ChevronUp className="w-5 h-5 text-gray-400" />
+            <ChevronUp className="w-5 h-5 text-neutral-400 dark:text-neutral-500" />
           ) : (
-            <ChevronDown className="w-5 h-5 text-gray-400" />
+            <ChevronDown className="w-5 h-5 text-neutral-400 dark:text-neutral-500" />
           )}
         </button>
         {uitlegOpen && (
-          <div className="px-6 pb-6 space-y-4 text-sm text-gray-600 leading-relaxed">
+          <div className="px-6 pb-6 space-y-4 text-sm text-neutral-600 dark:text-neutral-400 leading-relaxed">
             <div>
-              <p className="font-semibold text-gray-800 mb-1">Suikerklontjes</p>
+              <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Suikerklontjes</p>
               <p>
                 Eén standaard suikerklontje weegt ~4g. Voor je lichaam doet 4g zetmeel (uit brood, rijst of pasta)
                 ruwweg hetzelfde als 4g suiker: het wordt omgezet in glucose. Suikerklontjes maken dat zichtbaar.
@@ -155,7 +155,7 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
             </div>
             {product.glycemischeIndex !== null && (
               <div>
-                <p className="font-semibold text-gray-800 mb-1">Glycemische index (GI)</p>
+                <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Glycemische index (GI)</p>
                 <p>
                   De GI zegt hoe snel dit product je bloedsuiker laat stijgen. Pure glucose heeft GI 100.
                   Hoe lager, hoe langzamer — en langzamer is beter: minder pieken, minder honger.
@@ -164,14 +164,14 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
             )}
             {product.glycemischeLading !== null && (
               <div>
-                <p className="font-semibold text-gray-800 mb-1">Glycemische lading (GL)</p>
+                <p className="font-semibold text-neutral-800 dark:text-neutral-200 mb-1">Glycemische lading (GL)</p>
                 <p>
                   De GL houdt ook rekening met hoeveel koolhydraten er per portie in zitten. Watermeloen heeft
                   een hoge GI maar weinig koolhydraten per stuk, dus lage GL. GL is eerlijker dan GI alleen.
                 </p>
               </div>
             )}
-            <Link href="/uitleg" className="text-[#0d9488] hover:underline font-medium">
+            <Link href="/uitleg" className="text-neutral-900 dark:text-neutral-100 hover:underline font-medium">
               Lees de volledige uitleg →
             </Link>
           </div>

@@ -13,18 +13,17 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
   if (!product) {
     return (
       <div className="max-w-md mx-auto px-4 py-20 text-center">
-        <div className="text-6xl mb-4">🤷</div>
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">Product niet gevonden</h1>
-        <p className="text-gray-500 mb-2">
+        <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100 mb-2">Product niet gevonden</h1>
+        <p className="text-sm text-neutral-500 dark:text-neutral-400 mb-2">
           Barcode <span className="font-mono">{barcode}</span> staat niet in Open Food Facts.
         </p>
-        <p className="text-sm text-gray-400 mb-6">
+        <p className="text-xs text-neutral-400 dark:text-neutral-500 mb-6">
           Je kunt het zelf toevoegen op{' '}
-          <a href="https://world.openfoodfacts.org" className="text-[#0d9488] underline" target="_blank" rel="noopener noreferrer">
+          <a href="https://world.openfoodfacts.org" className="underline" target="_blank" rel="noopener noreferrer">
             openfoodfacts.org
           </a>
         </p>
-        <Link href="/scan" className="inline-block bg-[#0d9488] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#0f766e] transition-colors">
+        <Link href="/scan" className="inline-block border border-neutral-900 dark:border-neutral-100 text-neutral-900 dark:text-neutral-100 font-semibold px-6 py-2.5 rounded-full hover:bg-neutral-900 hover:text-white dark:hover:bg-white dark:hover:text-black transition-colors">
           Probeer opnieuw
         </Link>
       </div>
@@ -51,7 +50,7 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
     <div className="max-w-2xl mx-auto px-4 py-8">
       <Link
         href="/scan"
-        className="inline-flex items-center gap-1.5 text-sm text-gray-500 hover:text-gray-900 transition-colors mb-8"
+        className="inline-flex items-center gap-1.5 text-sm text-neutral-500 dark:text-neutral-400 hover:text-neutral-900 dark:hover:text-neutral-100 transition-colors mb-8"
       >
         <ArrowLeft className="w-4 h-4" />
         Terug naar scanner
@@ -64,22 +63,22 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
           <img
             src={product.imageUrl}
             alt={product.naam}
-            className="w-28 h-28 object-contain mx-auto mb-4 rounded-2xl border border-[#e2e8f0]"
+            className="w-28 h-28 object-contain mx-auto mb-4 rounded-xl border border-neutral-200 dark:border-neutral-800"
           />
         ) : (
           <div className="flex justify-center mb-4">
             <OFFIcon size="lg" />
           </div>
         )}
-        <h1 className="text-2xl font-bold text-gray-900">{product.naam}</h1>
-        {product.merk && <p className="text-gray-400 text-sm mt-0.5">{product.merk}</p>}
-        <p className="text-gray-500 mt-1">Per portie ({product.portieGram}g)</p>
+        <h1 className="text-2xl font-bold tracking-tight text-neutral-900 dark:text-neutral-100">{product.naam}</h1>
+        {product.merk && <p className="text-neutral-400 dark:text-neutral-500 text-sm mt-0.5">{product.merk}</p>}
+        <p className="text-neutral-500 dark:text-neutral-400 text-sm mt-1">Per portie ({product.portieGram}g)</p>
       </div>
 
       {/* Hero number */}
       <div className="text-center mb-2">
-        <span className="text-8xl font-black text-gray-900 leading-none tabular-nums">{klontjes}</span>
-        <span className="block text-lg text-gray-500 mt-1">suikerklontjes per portie</span>
+        <span className="text-8xl font-black text-neutral-900 dark:text-neutral-100 leading-none tabular-nums">{klontjes}</span>
+        <span className="block text-lg text-neutral-500 dark:text-neutral-400 mt-1">suikerklontjes per portie</span>
       </div>
 
       <div className="flex flex-col items-center gap-3 mb-8">
@@ -90,36 +89,35 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
       </div>
 
       {/* Tower */}
-      <div className="bg-white rounded-3xl border border-[#e2e8f0] p-8 mb-6 flex flex-col items-center">
+      <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-8 mb-6 flex flex-col items-center">
         <SuikerklontjesToren klontjes={klontjes} />
-        <p className="text-xs text-gray-400 mt-4">1 klontje = 4g koolhydraten</p>
+        <p className="text-xs text-neutral-400 dark:text-neutral-500 mt-4">1 klontje = 4g koolhydraten</p>
       </div>
 
       {/* Stats */}
-      <div className="bg-white rounded-3xl border border-[#e2e8f0] divide-y divide-[#e2e8f0] mb-6">
+      <div className="bg-white dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 divide-y divide-neutral-200 dark:divide-neutral-800 mb-6">
         <div className="px-6 py-4 flex justify-between">
-          <span className="text-gray-600">Koolhydraten per portie</span>
-          <span className="font-semibold">{product.koolhydratenPerPortie}g</span>
+          <span className="text-sm text-neutral-600 dark:text-neutral-400">Koolhydraten per portie</span>
+          <span className="font-semibold text-sm text-neutral-900 dark:text-neutral-100">{product.koolhydratenPerPortie}g</span>
         </div>
         <div className="px-6 py-4 flex justify-between">
-          <span className="text-gray-600">Koolhydraten per 100g</span>
-          <span className="font-semibold">{product.koolhydratenPer100g}g</span>
+          <span className="text-sm text-neutral-600 dark:text-neutral-400">Koolhydraten per 100g</span>
+          <span className="font-semibold text-sm text-neutral-900 dark:text-neutral-100">{product.koolhydratenPer100g}g</span>
         </div>
         <div className="px-6 py-4 flex justify-between">
-          <span className="text-gray-600">Portiegrootte</span>
-          <span className="font-semibold">{product.portieGram}g</span>
+          <span className="text-sm text-neutral-600 dark:text-neutral-400">Portiegrootte</span>
+          <span className="font-semibold text-sm text-neutral-900 dark:text-neutral-100">{product.portieGram}g</span>
         </div>
-        <div className="px-6 py-4 text-sm text-gray-400">
+        <div className="px-6 py-4 text-sm text-neutral-400 dark:text-neutral-500">
           GI en GL niet beschikbaar via Open Food Facts.
         </div>
       </div>
 
       {/* OFF badge */}
-      <div className="bg-gray-50 rounded-2xl border border-gray-200 p-4 text-sm text-gray-500 flex items-center gap-3">
-        <span className="text-xl">🌍</span>
+      <div className="bg-neutral-50 dark:bg-neutral-900 rounded-xl border border-neutral-200 dark:border-neutral-800 p-4 text-sm text-neutral-500 dark:text-neutral-400 flex items-center gap-3">
         <div>
-          <p className="font-medium text-gray-700">Bron: Open Food Facts</p>
-          <p>Barcode {barcode} · Gegevens van productetiket</p>
+          <p className="font-medium text-neutral-700 dark:text-neutral-300">Bron: Open Food Facts</p>
+          <p className="text-xs mt-0.5">Barcode {barcode} · Gegevens van productetiket</p>
         </div>
       </div>
     </div>
