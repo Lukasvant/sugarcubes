@@ -11,6 +11,7 @@ import SuikerklontjesToren from '@/components/SuikerklontjesToren';
 import GIBadge from '@/components/GIBadge';
 import GLBadge from '@/components/GLBadge';
 import SearchBar from '@/components/SearchBar';
+import ProductIcon from '@/components/ProductIcon';
 
 const alleProducten = getAlleProducten();
 
@@ -81,7 +82,7 @@ function VergelijkInhoud() {
 
       {selected.length === 0 && (
         <div className="text-center py-20 text-gray-400">
-          <div className="text-5xl mb-4">🔍</div>
+          <Search className="w-10 h-10 mx-auto mb-4 text-gray-300" />
           <p className="text-lg">Voeg producten toe om te vergelijken.</p>
           <p className="text-sm mt-2">Tip: ga naar een productpagina en klik "Voeg toe aan vergelijking"</p>
         </div>
@@ -102,7 +103,9 @@ function VergelijkInhoud() {
                   >
                     ×
                   </button>
-                  <div className="text-4xl mb-2 text-center">{product.emoji}</div>
+                  <div className="flex justify-center mb-2">
+                    <ProductIcon categorie={product.categorie} size="sm" />
+                  </div>
                   <h2 className="font-semibold text-gray-900 text-center text-sm">{product.naam}</h2>
                   <p className="text-xs text-gray-400 text-center mt-0.5">{product.portieBeschrijving}</p>
                 </div>

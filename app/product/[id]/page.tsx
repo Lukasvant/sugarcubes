@@ -10,6 +10,7 @@ import SuikerklontjesToren from '@/components/SuikerklontjesToren';
 import GIBadge from '@/components/GIBadge';
 import GLBadge from '@/components/GLBadge';
 import CompareBar, { useCompare } from '@/components/CompareBar';
+import ProductIcon from '@/components/ProductIcon';
 
 const alleProducten = getAlleProducten();
 
@@ -45,7 +46,9 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
 
       {/* Header */}
       <div className="text-center mb-8">
-        <div className="text-7xl mb-4">{product.emoji}</div>
+        <div className="flex justify-center mb-4">
+          <ProductIcon categorie={product.categorie} size="lg" />
+        </div>
         <h1 className="text-3xl font-bold text-gray-900">{product.naam}</h1>
         <p className="text-gray-500 mt-1">{product.portieBeschrijving}</p>
       </div>

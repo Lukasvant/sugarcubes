@@ -3,10 +3,11 @@
 import { useState, useEffect, useRef, useCallback } from 'react';
 import Fuse from 'fuse.js';
 import Link from 'next/link';
-import { Search, Loader2 } from 'lucide-react';
+import { Search, Loader2, Globe } from 'lucide-react';
 import type { Product } from '@/lib/types';
 import { suikerklontjes } from '@/lib/types';
 import type { OFFSearchResult } from '@/lib/openfoodfacts';
+import ProductIcon, { OFFIcon } from '@/components/ProductIcon';
 
 interface SearchBarProps {
   producten: Product[];
@@ -120,20 +121,16 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
                 {onSelect ? (
                   <button onMouseDown={() => handleSelectLocal(product)}
                     className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f1f5f9] transition-colors ${idx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
-                    <span className="text-2xl">{product.emoji}</span>
+                    <ProductIcon categorie={product.categorie} size="sm" />
                     <span className="flex-1 font-medium text-gray-900">{product.naam}</span>
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
-                      <span>🍬</span>{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
-                    </span>
+                    <span className="text-sm text-gray-500 tabular-nums">{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}</span>
                   </button>
                 ) : (
                   <Link href={`/product/${product.id}`}
                     className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f1f5f9] transition-colors ${idx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
-                    <span className="text-2xl">{product.emoji}</span>
+                    <ProductIcon categorie={product.categorie} size="sm" />
                     <span className="flex-1 font-medium text-gray-900">{product.naam}</span>
-                    <span className="text-sm text-gray-500 flex items-center gap-1">
-                      <span>🍬</span>{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
-                    </span>
+                    <span className="text-sm text-gray-500 tabular-nums">{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}</span>
                   </Link>
                 )}
               </li>
@@ -145,7 +142,7 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
             <>
               <li className="px-4 py-2 bg-gray-50 border-t border-[#e2e8f0]">
                 <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
-                  {offLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <span>🌍</span>}
+                  {offLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <Globe className="w-3 h-3" />}
                   {offLoading ? 'Zoeken in Open Food Facts…' : 'Open Food Facts'}
                 </span>
               </li>
@@ -156,13 +153,13 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
                   <li key={product.barcode} role="option" aria-selected={globalIdx === activeIdx}>
                     <Link href={`/product/off/${product.barcode}`}
                       className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f1f5f9] transition-colors ${globalIdx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
-                      <span className="text-2xl">🛒</span>
+                      <OFFIcon size="sm" />
                       <div className="flex-1 min-w-0">
                         <div className="font-medium text-gray-900 truncate">{product.naam}</div>
                         {product.merk && <div className="text-xs text-gray-400 truncate">{product.merk}</div>}
                       </div>
-                      <span className="text-sm text-gray-500 flex items-center gap-1 flex-shrink-0">
-                        <span>🍬</span>{klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
+                      <span className="text-sm text-gray-500 tabular-nums flex-shrink-0">
+                        {klontjes} {klontjes === 1 ? 'klontje' : 'klontjes'}
                       </span>
                     </Link>
                   </li>

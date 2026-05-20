@@ -3,6 +3,7 @@ import Link from 'next/link';
 import { ArrowLeft } from 'lucide-react';
 import { lookupBarcode } from '@/lib/openfoodfacts';
 import SuikerklontjesToren from '@/components/SuikerklontjesToren';
+import { OFFIcon } from '@/components/ProductIcon';
 
 export default async function OFFProductPage({ params }: { params: Promise<{ barcode: string }> }) {
   const { barcode } = await params;
@@ -62,10 +63,12 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
           <img
             src={product.imageUrl}
             alt={product.naam}
-            className="w-28 h-28 object-contain mx-auto mb-4 rounded-2xl"
+            className="w-28 h-28 object-contain mx-auto mb-4 rounded-2xl border border-[#e2e8f0]"
           />
         ) : (
-          <div className="text-7xl mb-4">🛒</div>
+          <div className="flex justify-center mb-4">
+            <OFFIcon size="lg" />
+          </div>
         )}
         <h1 className="text-2xl font-bold text-gray-900">{product.naam}</h1>
         {product.merk && <p className="text-gray-400 text-sm mt-0.5">{product.merk}</p>}

@@ -5,6 +5,7 @@ import Link from 'next/link';
 import type { Product } from '@/lib/types';
 import { suikerklontjes } from '@/lib/types';
 import { X, GitCompare } from 'lucide-react';
+import ProductIcon from '@/components/ProductIcon';
 
 export const COMPARE_KEY = 'vergelijk_ids';
 export const MAX_COMPARE = 3;
@@ -57,10 +58,10 @@ export default function CompareBar({ producten, ids, onRemove, onClear }: Compar
       <div className="bg-white rounded-2xl shadow-2xl border border-[#e2e8f0] p-3 flex items-center gap-2">
         <div className="flex-1 flex items-center gap-2 overflow-hidden">
           {selected.map((p) => (
-            <div key={p.id} className="flex items-center gap-1 bg-[#f1f5f9] rounded-lg px-2 py-1 text-sm">
-              <span>{p.emoji}</span>
+            <div key={p.id} className="flex items-center gap-1.5 bg-[#f1f5f9] rounded-lg px-2 py-1 text-sm">
+              <ProductIcon categorie={p.categorie} size="sm" className="w-5 h-5 rounded-md" />
               <span className="font-medium truncate max-w-[80px]">{p.naam}</span>
-              <span className="text-gray-500">{suikerklontjes(p)}🍬</span>
+              <span className="text-gray-500 tabular-nums">{suikerklontjes(p)}</span>
               <button
                 onClick={() => onRemove(p.id)}
                 className="ml-0.5 text-gray-400 hover:text-red-500 transition-colors"

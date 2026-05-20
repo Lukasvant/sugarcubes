@@ -4,6 +4,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import SearchBar from '@/components/SearchBar';
 import CompareBar, { useCompare } from '@/components/CompareBar';
+import ProductIcon from '@/components/ProductIcon';
 import { getAlleProducten } from '@/lib/data';
 import { suikerklontjes } from '@/lib/types';
 import type { Product } from '@/lib/types';
@@ -59,9 +60,9 @@ export default function HomePage() {
               <div key={product.id} className="group relative">
                 <Link
                   href={`/product/${product.id}`}
-                  className="flex items-center gap-3 bg-white rounded-2xl border border-[#e2e8f0] p-4 hover:border-[#0d9488] hover:shadow-md transition-all block"
+                  className="flex items-center gap-3 bg-white rounded-2xl border border-[#e2e8f0] p-4 hover:border-teal-300 hover:shadow-sm transition-all block"
                 >
-                  <span className="text-3xl">{product.emoji}</span>
+                  <ProductIcon categorie={product.categorie} size="sm" />
                   <div className="min-w-0">
                     <div className="font-medium text-gray-900 text-sm leading-tight truncate">{product.naam}</div>
                     <div className="text-xs text-gray-500 mt-0.5">
