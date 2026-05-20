@@ -63,16 +63,15 @@ export default function FotoPage() {
       formData.append('image', blob, 'foto.jpg');
 
       const res = await fetch('/api/herken-foto', { method: 'POST', body: formData });
-      if (!res.ok) throw new Error('Herkenning mislukt');
-
-      const data: { producten: string[] } = await res.json();
-      const herkend: HerkendProduct[] = data.producten.map((naam) => ({
+      const data: { producten?: string[]; error?: string } = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Herkenning mislukt');
+      const herkend: HerkendProduct[] = (data.producten ?? []).map((naam) => ({
         naam,
         match: matchProduct(naam),
       }));
       setResults(herkend);
-    } catch {
-      setError('Er ging iets mis bij de herkenning. Probeer opnieuw.');
+    } catch (e) {
+      setError(e instanceof Error ? e.message : 'Er ging iets mis bij de herkenning. Probeer opnieuw.');
     } finally {
       setLoading(false);
     }
