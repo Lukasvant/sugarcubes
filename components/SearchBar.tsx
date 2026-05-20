@@ -153,7 +153,12 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
                   <li key={product.barcode} role="option" aria-selected={globalIdx === activeIdx}>
                     <Link href={`/product/off/${product.barcode}`}
                       className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f1f5f9] transition-colors ${globalIdx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
-                      <OFFIcon size="sm" />
+                      {product.imageUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={product.imageUrl} alt={product.naam} className="w-9 h-9 rounded-xl object-contain bg-gray-50 border border-[#e2e8f0] flex-shrink-0" />
+                      ) : (
+                        <OFFIcon size="sm" />
+                      )}
                       <div className="flex-1 min-w-0">
                         <div className="font-medium text-gray-900 truncate">{product.naam}</div>
                         {product.merk && <div className="text-xs text-gray-400 truncate">{product.merk}</div>}
