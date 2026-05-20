@@ -113,9 +113,9 @@ export default function FotoPage() {
         <div className="grid grid-cols-2 gap-4 mb-6">
           <button
             onClick={() => cameraRef.current?.click()}
-            className="flex flex-col items-center gap-3 bg-white border-2 border-dashed border-[#e8e0d8] rounded-2xl p-8 hover:border-[#e07a5f] hover:bg-[#fdf5f0] transition-colors"
+            className="flex flex-col items-center gap-3 bg-white border-2 border-dashed border-[#e2e8f0] rounded-2xl p-8 hover:border-[#0d9488] hover:bg-[#f1f5f9] transition-colors"
           >
-            <Camera className="w-8 h-8 text-[#e07a5f]" />
+            <Camera className="w-8 h-8 text-[#0d9488]" />
             <span className="font-medium text-gray-700 text-sm">Camera</span>
             <input
               ref={cameraRef}
@@ -129,9 +129,9 @@ export default function FotoPage() {
 
           <button
             onClick={() => fileRef.current?.click()}
-            className="flex flex-col items-center gap-3 bg-white border-2 border-dashed border-[#e8e0d8] rounded-2xl p-8 hover:border-[#e07a5f] hover:bg-[#fdf5f0] transition-colors"
+            className="flex flex-col items-center gap-3 bg-white border-2 border-dashed border-[#e2e8f0] rounded-2xl p-8 hover:border-[#0d9488] hover:bg-[#f1f5f9] transition-colors"
           >
-            <Upload className="w-8 h-8 text-[#e07a5f]" />
+            <Upload className="w-8 h-8 text-[#0d9488]" />
             <span className="font-medium text-gray-700 text-sm">Uploaden</span>
             <input
               ref={fileRef}
@@ -151,7 +151,7 @@ export default function FotoPage() {
           <img
             src={preview}
             alt="Geüploade foto"
-            className="w-full rounded-2xl object-contain max-h-72 bg-gray-50 border border-[#e8e0d8]"
+            className="w-full rounded-2xl object-contain max-h-72 bg-gray-50 border border-[#e2e8f0]"
           />
           {!loading && (
             <button
@@ -168,7 +168,7 @@ export default function FotoPage() {
       {/* Loading */}
       {loading && (
         <div className="flex flex-col items-center gap-3 py-10 text-gray-500">
-          <Loader2 className="w-8 h-8 animate-spin text-[#e07a5f]" />
+          <Loader2 className="w-8 h-8 animate-spin text-[#0d9488]" />
           <p className="text-sm">AI herkent producten…</p>
         </div>
       )}
@@ -210,7 +210,7 @@ export default function FotoPage() {
                   <Link
                     key={idx}
                     href={`/product/${item.match.id}`}
-                    className="bg-white border border-[#e8e0d8] rounded-2xl p-5 flex items-center gap-4 hover:border-[#e07a5f] hover:bg-[#fdf5f0] transition-colors"
+                    className="bg-white border border-[#e2e8f0] rounded-2xl p-5 flex items-center gap-4 hover:border-[#0d9488] hover:bg-[#f1f5f9] transition-colors"
                   >
                     <span className="text-4xl">{item.match.emoji}</span>
                     <div className="flex-1 min-w-0">
@@ -230,7 +230,7 @@ export default function FotoPage() {
               return (
                 <div
                   key={idx}
-                  className="bg-white border border-[#e8e0d8] rounded-2xl p-5 flex items-center gap-4 opacity-60"
+                  className="bg-white border border-[#e2e8f0] rounded-2xl p-5 flex items-center gap-4 opacity-60"
                 >
                   <span className="text-4xl">🔍</span>
                   <div className="flex-1">
@@ -244,7 +244,7 @@ export default function FotoPage() {
 
           <button
             onClick={reset}
-            className="mt-6 w-full flex items-center justify-center gap-2 bg-[#e07a5f] text-white font-semibold py-3 rounded-xl hover:bg-[#c9694f] transition-colors"
+            className="mt-6 w-full flex items-center justify-center gap-2 bg-[#0d9488] text-white font-semibold py-3 rounded-xl hover:bg-[#0f766e] transition-colors"
           >
             <Camera className="w-5 h-5" />
             Nieuwe foto maken

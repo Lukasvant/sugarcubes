@@ -70,7 +70,7 @@ function VergelijkInhoud() {
           ) : (
             <button
               onClick={() => setZoekOpen(true)}
-              className="flex items-center gap-2 bg-white border-2 border-dashed border-[#e8e0d8] rounded-2xl px-5 py-3 text-sm font-medium text-gray-500 hover:border-[#e07a5f] hover:text-[#e07a5f] transition-colors"
+              className="flex items-center gap-2 bg-white border-2 border-dashed border-[#e2e8f0] rounded-2xl px-5 py-3 text-sm font-medium text-gray-500 hover:border-[#0d9488] hover:text-[#0d9488] transition-colors"
             >
               <Search className="w-4 h-4" />
               Voeg product toe{selected.length === 0 ? '' : ` (${3 - selected.length} nog mogelijk)`}
@@ -93,8 +93,8 @@ function VergelijkInhoud() {
           {selected.map((product) => {
             const klontjes = suikerklontjes(product);
             return (
-              <div key={product.id} className="bg-white rounded-3xl border border-[#e8e0d8] overflow-hidden">
-                <div className="p-5 border-b border-[#e8e0d8] relative">
+              <div key={product.id} className="bg-white rounded-3xl border border-[#e2e8f0] overflow-hidden">
+                <div className="p-5 border-b border-[#e2e8f0] relative">
                   <button
                     onClick={() => removeProduct(product.id)}
                     className="absolute top-3 right-3 text-gray-300 hover:text-red-400 transition-colors text-lg leading-none"
@@ -108,13 +108,13 @@ function VergelijkInhoud() {
                 </div>
 
                 {/* Klontjes count */}
-                <div className="py-4 text-center border-b border-[#e8e0d8]">
+                <div className="py-4 text-center border-b border-[#e2e8f0]">
                   <span className="text-5xl font-black text-gray-900">{klontjes}</span>
                   <span className="block text-xs text-gray-400 mt-1">klontjes</span>
                 </div>
 
                 {/* Mini tower */}
-                <div className="py-4 px-3 flex justify-center border-b border-[#e8e0d8]">
+                <div className="py-4 px-3 flex justify-center border-b border-[#e2e8f0]">
                   <SuikerklontjesToren klontjes={klontjes} />
                 </div>
 

@@ -107,19 +107,19 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
           onBlur={() => setTimeout(() => setOpen(false), 150)}
           placeholder={placeholder}
           autoComplete="off"
-          className="w-full pl-12 pr-4 py-4 text-base rounded-2xl border-2 border-[#e8e0d8] bg-white shadow-sm focus:outline-none focus:border-[#e07a5f] transition-colors placeholder:text-gray-400"
+          className="w-full pl-12 pr-4 py-4 text-base rounded-2xl border-2 border-[#e2e8f0] bg-white shadow-sm focus:outline-none focus:border-[#0d9488] transition-colors placeholder:text-gray-400"
         />
       </div>
 
       {open && hasResults && (
-        <ul className="absolute z-50 w-full mt-2 bg-white rounded-2xl shadow-xl border border-[#e8e0d8] overflow-hidden">
+        <ul className="absolute z-50 w-full mt-2 bg-white rounded-2xl shadow-xl border border-[#e2e8f0] overflow-hidden">
           {localResults.map((product, idx) => {
             const klontjes = suikerklontjes(product);
             return (
               <li key={product.id} role="option" aria-selected={idx === activeIdx}>
                 {onSelect ? (
                   <button onMouseDown={() => handleSelectLocal(product)}
-                    className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#fdf5f0] transition-colors ${idx === activeIdx ? 'bg-[#fdf5f0]' : ''}`}>
+                    className={`w-full flex items-center gap-3 px-4 py-3 text-left hover:bg-[#f1f5f9] transition-colors ${idx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
                     <span className="text-2xl">{product.emoji}</span>
                     <span className="flex-1 font-medium text-gray-900">{product.naam}</span>
                     <span className="text-sm text-gray-500 flex items-center gap-1">
@@ -128,7 +128,7 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
                   </button>
                 ) : (
                   <Link href={`/product/${product.id}`}
-                    className={`flex items-center gap-3 px-4 py-3 hover:bg-[#fdf5f0] transition-colors ${idx === activeIdx ? 'bg-[#fdf5f0]' : ''}`}>
+                    className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f1f5f9] transition-colors ${idx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
                     <span className="text-2xl">{product.emoji}</span>
                     <span className="flex-1 font-medium text-gray-900">{product.naam}</span>
                     <span className="text-sm text-gray-500 flex items-center gap-1">
@@ -143,7 +143,7 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
           {/* OFF results */}
           {(offResults.length > 0 || offLoading) && (
             <>
-              <li className="px-4 py-2 bg-gray-50 border-t border-[#e8e0d8]">
+              <li className="px-4 py-2 bg-gray-50 border-t border-[#e2e8f0]">
                 <span className="text-xs font-semibold text-gray-400 uppercase tracking-wider flex items-center gap-1.5">
                   {offLoading ? <Loader2 className="w-3 h-3 animate-spin" /> : <span>🌍</span>}
                   {offLoading ? 'Zoeken in Open Food Facts…' : 'Open Food Facts'}
@@ -155,7 +155,7 @@ export default function SearchBar({ producten, onSelect, placeholder = 'Zoek een
                 return (
                   <li key={product.barcode} role="option" aria-selected={globalIdx === activeIdx}>
                     <Link href={`/product/off/${product.barcode}`}
-                      className={`flex items-center gap-3 px-4 py-3 hover:bg-[#fdf5f0] transition-colors ${globalIdx === activeIdx ? 'bg-[#fdf5f0]' : ''}`}>
+                      className={`flex items-center gap-3 px-4 py-3 hover:bg-[#f1f5f9] transition-colors ${globalIdx === activeIdx ? 'bg-[#f1f5f9]' : ''}`}>
                       <span className="text-2xl">🛒</span>
                       <div className="flex-1 min-w-0">
                         <div className="font-medium text-gray-900 truncate">{product.naam}</div>

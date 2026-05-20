@@ -47,7 +47,7 @@ export default function ScanPage() {
 
         <button
           onClick={() => setScanning(true)}
-          className="w-full flex items-center justify-center gap-3 bg-[#e07a5f] text-white font-semibold py-4 rounded-2xl hover:bg-[#c9694f] transition-colors text-lg mb-8"
+          className="w-full flex items-center justify-center gap-3 bg-[#0d9488] text-white font-semibold py-4 rounded-2xl hover:bg-[#0f766e] transition-colors text-lg mb-8"
         >
           <ScanBarcode className="w-6 h-6" />
           Camera openen
@@ -55,10 +55,10 @@ export default function ScanPage() {
 
         <div className="relative mb-8">
           <div className="absolute inset-0 flex items-center">
-            <div className="w-full border-t border-[#e8e0d8]" />
+            <div className="w-full border-t border-[#e2e8f0]" />
           </div>
           <div className="relative flex justify-center">
-            <span className="bg-[#fafaf7] px-4 text-sm text-gray-400">of voer barcode handmatig in</span>
+            <span className="bg-[#f8fafc] px-4 text-sm text-gray-400">of voer barcode handmatig in</span>
           </div>
         </div>
 
@@ -68,7 +68,7 @@ export default function ScanPage() {
             value={manualCode}
             onChange={(e) => setManualCode(e.target.value)}
             placeholder="8710522005149"
-            className="flex-1 px-4 py-3 rounded-xl border-2 border-[#e8e0d8] focus:outline-none focus:border-[#e07a5f] transition-colors text-base"
+            className="flex-1 px-4 py-3 rounded-xl border-2 border-[#e2e8f0] focus:outline-none focus:border-[#0d9488] transition-colors text-base"
             inputMode="numeric"
           />
           <button

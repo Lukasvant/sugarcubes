@@ -107,11 +107,11 @@ export default function BarcodeScanner({ onScan, onClose }: BarcodeScannerProps)
           <div className="relative w-64 h-40">
             {/* Corner markers */}
             {['top-0 left-0', 'top-0 right-0 rotate-90', 'bottom-0 right-0 rotate-180', 'bottom-0 left-0 -rotate-90'].map((pos, i) => (
-              <div key={i} className={`absolute ${pos} w-8 h-8 border-[#e07a5f]`}
+              <div key={i} className={`absolute ${pos} w-8 h-8 border-[#0d9488]`}
                 style={{ borderTopWidth: 3, borderLeftWidth: 3 }} />
             ))}
             <div className="absolute inset-0 flex items-center justify-center">
-              <div className="w-full h-0.5 bg-[#e07a5f] opacity-60 animate-pulse" />
+              <div className="w-full h-0.5 bg-[#0d9488] opacity-60 animate-pulse" />
             </div>
           </div>
         </div>

@@ -18,11 +18,11 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
         </p>
         <p className="text-sm text-gray-400 mb-6">
           Je kunt het zelf toevoegen op{' '}
-          <a href="https://world.openfoodfacts.org" className="text-[#e07a5f] underline" target="_blank" rel="noopener noreferrer">
+          <a href="https://world.openfoodfacts.org" className="text-[#0d9488] underline" target="_blank" rel="noopener noreferrer">
             openfoodfacts.org
           </a>
         </p>
-        <Link href="/scan" className="inline-block bg-[#e07a5f] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#c9694f] transition-colors">
+        <Link href="/scan" className="inline-block bg-[#0d9488] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#0f766e] transition-colors">
           Probeer opnieuw
         </Link>
       </div>
@@ -85,13 +85,13 @@ export default async function OFFProductPage({ params }: { params: Promise<{ bar
       </div>
 
       {/* Tower */}
-      <div className="bg-white rounded-3xl border border-[#e8e0d8] p-8 mb-6 flex flex-col items-center">
+      <div className="bg-white rounded-3xl border border-[#e2e8f0] p-8 mb-6 flex flex-col items-center">
         <SuikerklontjesToren klontjes={klontjes} />
         <p className="text-xs text-gray-400 mt-4">1 klontje = 4g koolhydraten</p>
       </div>
 
       {/* Stats */}
-      <div className="bg-white rounded-3xl border border-[#e8e0d8] divide-y divide-[#e8e0d8] mb-6">
+      <div className="bg-white rounded-3xl border border-[#e2e8f0] divide-y divide-[#e2e8f0] mb-6">
         <div className="px-6 py-4 flex justify-between">
           <span className="text-gray-600">Koolhydraten per portie</span>
           <span className="font-semibold">{product.koolhydratenPerPortie}g</span>

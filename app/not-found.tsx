@@ -8,7 +8,7 @@ export default function NotFound() {
       <p className="text-gray-500 mb-6">Dit product staat nog niet in onze database.</p>
       <Link
         href="/"
-        className="inline-block bg-[#e07a5f] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#c9694f] transition-colors"
+        className="inline-block bg-[#0d9488] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#0f766e] transition-colors"
       >
         Terug naar zoeken
       </Link>

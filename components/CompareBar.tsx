@@ -54,10 +54,10 @@ export default function CompareBar({ producten, ids, onRemove, onClear }: Compar
 
   return (
     <div className="fixed bottom-4 left-1/2 -translate-x-1/2 z-50 w-[calc(100%-2rem)] max-w-lg">
-      <div className="bg-white rounded-2xl shadow-2xl border border-[#e8e0d8] p-3 flex items-center gap-2">
+      <div className="bg-white rounded-2xl shadow-2xl border border-[#e2e8f0] p-3 flex items-center gap-2">
         <div className="flex-1 flex items-center gap-2 overflow-hidden">
           {selected.map((p) => (
-            <div key={p.id} className="flex items-center gap-1 bg-[#fdf5f0] rounded-lg px-2 py-1 text-sm">
+            <div key={p.id} className="flex items-center gap-1 bg-[#f1f5f9] rounded-lg px-2 py-1 text-sm">
               <span>{p.emoji}</span>
               <span className="font-medium truncate max-w-[80px]">{p.naam}</span>
               <span className="text-gray-500">{suikerklontjes(p)}🍬</span>
@@ -75,7 +75,7 @@ export default function CompareBar({ producten, ids, onRemove, onClear }: Compar
           {ids.length >= 2 && (
             <Link
               href={`/vergelijk?ids=${ids.join(',')}`}
-              className="flex items-center gap-1.5 bg-[#e07a5f] text-white text-sm font-medium px-3 py-1.5 rounded-xl hover:bg-[#c9694f] transition-colors"
+              className="flex items-center gap-1.5 bg-[#0d9488] text-white text-sm font-medium px-3 py-1.5 rounded-xl hover:bg-[#0f766e] transition-colors"
             >
               <GitCompare className="w-4 h-4" />
               Vergelijk

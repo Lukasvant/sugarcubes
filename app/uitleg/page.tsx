@@ -20,7 +20,7 @@ export default function UitlegPage() {
 
       <div className="space-y-6">
         {/* GI */}
-        <div className="bg-white rounded-3xl border border-[#e8e0d8] p-8">
+        <div className="bg-white rounded-3xl border border-[#e2e8f0] p-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-2xl bg-amber-100 flex items-center justify-center text-xl">
               ⚡
@@ -51,7 +51,7 @@ export default function UitlegPage() {
         </div>
 
         {/* GL */}
-        <div className="bg-white rounded-3xl border border-[#e8e0d8] p-8">
+        <div className="bg-white rounded-3xl border border-[#e2e8f0] p-8">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-10 h-10 rounded-2xl bg-blue-100 flex items-center justify-center text-xl">
               ⚖️
@@ -87,9 +87,9 @@ export default function UitlegPage() {
         </div>
 
         {/* Suikerklontjes */}
-        <div className="bg-white rounded-3xl border border-[#e8e0d8] p-8">
+        <div className="bg-white rounded-3xl border border-[#e2e8f0] p-8">
           <div className="flex items-center gap-3 mb-4">
-            <div className="w-10 h-10 rounded-2xl bg-[#fdf5f0] flex items-center justify-center text-xl">
+            <div className="w-10 h-10 rounded-2xl bg-[#f1f5f9] flex items-center justify-center text-xl">
               🍬
             </div>
             <h2 className="text-xl font-bold text-gray-900">Waarom suikerklontjes?</h2>
@@ -103,11 +103,11 @@ export default function UitlegPage() {
         </div>
       </div>
 
-      <div className="mt-10 bg-[#fdf5f0] rounded-2xl border border-[#f0d8cf] p-6 text-center">
+      <div className="mt-10 bg-[#f1f5f9] rounded-2xl border border-[#f0d8cf] p-6 text-center">
         <p className="text-gray-700 font-medium mb-3">Ga nu opzoeken wat in jouw eten zit</p>
         <Link
           href="/"
-          className="inline-block bg-[#e07a5f] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#c9694f] transition-colors"
+          className="inline-block bg-[#0d9488] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#0f766e] transition-colors"
         >
           Zoek een product
         </Link>

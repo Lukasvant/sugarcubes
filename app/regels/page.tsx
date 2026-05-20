@@ -74,10 +74,10 @@ export default function RegelsPage() {
         {regels.map((regel) => (
           <div
             key={regel.nummer}
-            className="bg-white rounded-2xl border border-[#e8e0d8] p-6 flex gap-4 hover:border-[#e07a5f] transition-colors"
+            className="bg-white rounded-2xl border border-[#e2e8f0] p-6 flex gap-4 hover:border-[#0d9488] transition-colors"
           >
             <div className="flex-shrink-0">
-              <div className="w-10 h-10 rounded-2xl bg-[#fdf5f0] flex items-center justify-center text-xl">
+              <div className="w-10 h-10 rounded-2xl bg-[#f1f5f9] flex items-center justify-center text-xl">
                 {regel.emoji}
               </div>
             </div>
@@ -91,11 +91,11 @@ export default function RegelsPage() {
         ))}
       </div>
 
-      <div className="mt-10 bg-[#fdf5f0] rounded-2xl border border-[#f0d8cf] p-6 text-center">
+      <div className="mt-10 bg-[#f1f5f9] rounded-2xl border border-[#f0d8cf] p-6 text-center">
         <p className="text-gray-700 font-medium mb-3">Benieuwd hoeveel klontjes er in jouw eten zitten?</p>
         <Link
           href="/"
-          className="inline-block bg-[#e07a5f] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#c9694f] transition-colors"
+          className="inline-block bg-[#0d9488] text-white font-semibold px-6 py-2.5 rounded-xl hover:bg-[#0f766e] transition-colors"
         >
           Zoek een product
         </Link>

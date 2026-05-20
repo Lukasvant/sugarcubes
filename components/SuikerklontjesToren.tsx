@@ -21,29 +21,29 @@ function SugarCube({ index }: { index: number }) {
         {/* top face */}
         <polygon
           points="16,3 29,9 16,15 3,9"
-          fill="white"
-          stroke="#d1d5db"
+          fill="#f0f9ff"
+          stroke="#bae6fd"
           strokeWidth="0.8"
         />
         {/* right face */}
         <polygon
           points="16,15 29,9 29,22 16,28"
-          fill="#f0ede8"
-          stroke="#d1d5db"
+          fill="#e0f2fe"
+          stroke="#bae6fd"
           strokeWidth="0.8"
         />
         {/* left face */}
         <polygon
           points="16,15 3,9 3,22 16,28"
-          fill="#e8e3db"
-          stroke="#d1d5db"
+          fill="#bae6fd"
+          stroke="#bae6fd"
           strokeWidth="0.8"
         />
         {/* subtle shine on top */}
         <polygon
           points="16,4.5 26,9.5 16,13 6,8.5"
           fill="white"
-          opacity="0.5"
+          opacity="0.4"
         />
       </svg>
     </div>

@@ -66,13 +66,13 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
       </div>
 
       {/* Sugar cube tower */}
-      <div className="bg-white rounded-3xl border border-[#e8e0d8] p-8 mb-6 flex flex-col items-center">
+      <div className="bg-white rounded-3xl border border-[#e2e8f0] p-8 mb-6 flex flex-col items-center">
         <SuikerklontjesToren klontjes={klontjes} />
         <p className="text-xs text-gray-400 mt-4">1 klontje = 4g koolhydraten</p>
       </div>
 
       {/* Stats */}
-      <div className="bg-white rounded-3xl border border-[#e8e0d8] divide-y divide-[#e8e0d8] mb-6">
+      <div className="bg-white rounded-3xl border border-[#e2e8f0] divide-y divide-[#e2e8f0] mb-6">
         <div className="px-6 py-4 flex justify-between items-center">
           <span className="text-gray-600">Koolhydraten per portie</span>
           <span className="font-semibold text-gray-900">{product.koolhydratenPerPortie}g</span>
@@ -109,8 +109,8 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
         onClick={() => toggle(product.id)}
         className={`w-full flex items-center justify-center gap-2 py-3 rounded-2xl font-medium transition-colors mb-6 ${
           inVergelijk
-            ? 'bg-[#e07a5f] text-white hover:bg-[#c9694f]'
-            : 'bg-white border-2 border-[#e07a5f] text-[#e07a5f] hover:bg-[#fdf5f0]'
+            ? 'bg-[#0d9488] text-white hover:bg-[#0f766e]'
+            : 'bg-white border-2 border-[#0d9488] text-[#0d9488] hover:bg-[#f1f5f9]'
         }`}
       >
         {inVergelijk ? (
@@ -127,10 +127,10 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
       </button>
 
       {/* Uitleg inklapbaar */}
-      <div className="bg-white rounded-3xl border border-[#e8e0d8] overflow-hidden">
+      <div className="bg-white rounded-3xl border border-[#e2e8f0] overflow-hidden">
         <button
           onClick={() => setUitlegOpen((v) => !v)}
-          className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-[#fdf5f0] transition-colors"
+          className="w-full px-6 py-4 flex items-center justify-between text-left hover:bg-[#f1f5f9] transition-colors"
         >
           <span className="font-semibold text-gray-900">Wat betekent dit?</span>
           {uitlegOpen ? (
@@ -166,7 +166,7 @@ export default function ProductPagina({ params }: { params: Promise<{ id: string
                 </p>
               </div>
             )}
-            <Link href="/uitleg" className="text-[#e07a5f] hover:underline font-medium">
+            <Link href="/uitleg" className="text-[#0d9488] hover:underline font-medium">
               Lees de volledige uitleg →
             </Link>
           </div>
